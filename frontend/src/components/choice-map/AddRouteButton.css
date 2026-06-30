@@ -1,0 +1,41 @@
+.add-route-btn {
+  border: 1.5px dashed var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.add-route-btn:hover {
+  background: #dfe9ff;
+}
+
+.add-route-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-pill);
+  padding: 8px 8px 8px 18px;
+}
+
+.add-route-controls__hint {
+  font-size: 13px;
+  color: var(--color-primary-dark);
+  font-weight: 500;
+}
+
+.add-route-controls__buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.add-route-controls__buttons .btn {
+  padding: 9px 16px;
+  font-size: 13px;
+}

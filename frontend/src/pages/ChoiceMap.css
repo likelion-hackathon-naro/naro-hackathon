@@ -1,0 +1,59 @@
+.choice-map-page {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+}
+
+.choice-map-page__title {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.choice-map-page__subtitle {
+  text-align: center;
+  color: var(--color-text-sub);
+  font-size: 15px;
+  margin: 0 0 32px;
+}
+
+.choice-map-card {
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 28px;
+}
+
+.choice-map-card__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.choice-map-card__summary {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--color-text-sub);
+}
+
+.choice-map-card__summary strong {
+  color: var(--color-text);
+  margin-right: 6px;
+  font-weight: 600;
+}
+
+.choice-map-card__routes {
+  margin-top: 22px;
+}
+
+.choice-map-card__routes-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}

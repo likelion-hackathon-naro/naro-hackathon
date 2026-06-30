@@ -1,0 +1,113 @@
+.island-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: default;
+}
+
+.island-node--clickable {
+  cursor: pointer;
+}
+
+.island-node__mound {
+  position: relative;
+  width: 64px;
+  height: 40px;
+  border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+  background: linear-gradient(
+    180deg,
+    var(--color-island-grass) 0%,
+    var(--color-island-grass-dark) 55%,
+    var(--color-island-sand) 100%
+  );
+  box-shadow: 0 6px 14px rgba(30, 41, 59, 0.12);
+  transition: transform 0.15s ease;
+}
+
+.island-node--goal .island-node__mound {
+  width: 76px;
+  height: 48px;
+}
+
+.island-node--clickable:hover .island-node__mound {
+  transform: translateY(-3px) scale(1.04);
+}
+
+.island-node--selected .island-node__mound {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.island-node__pin {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50% 50% 50% 0;
+  background: var(--color-primary);
+  transform: translateX(-50%) rotate(-45deg);
+}
+
+.island-node__flag {
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  width: 2px;
+  height: 26px;
+  background: #8a8f98;
+}
+
+.island-node__flag::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 2px;
+  width: 16px;
+  height: 11px;
+  background: var(--color-primary);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.island-node--goal .island-node__flag::after {
+  background: #f5a524;
+  width: 20px;
+  height: 13px;
+}
+
+.island-node__order {
+  position: absolute;
+  top: -10px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.island-node__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+  background: #fff;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-card);
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
