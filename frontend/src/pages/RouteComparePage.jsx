@@ -35,7 +35,7 @@ export default function RouteComparePage({
           style={{
             fontWeight: 700,
             fontSize: 17,
-            color: "#16213E",
+            color: "#3B6FE0",
             letterSpacing: "-0.02em",
           }}
         >
@@ -44,7 +44,11 @@ export default function RouteComparePage({
       </nav>
 
       <div
-        style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 48px 64px" }}
+        style={{
+          maxWidth: "none",
+          margin: "0 auto",
+          padding: "32px 2.5vw 64px",
+        }}
       >
         <div
           style={{
@@ -52,6 +56,7 @@ export default function RouteComparePage({
             color: "#5B6478",
             marginBottom: 18,
             cursor: "pointer",
+            textAlign: "left",
           }}
         >
           ← 지도 보기로 돌아가기
@@ -65,11 +70,19 @@ export default function RouteComparePage({
             margin: "0 0 4px",
             lineHeight: 1.35,
             letterSpacing: "-0.02em",
+            textAlign: "left",
           }}
         >
           여러 길을 비교하고, 지금의 나에게 맞는 길을 선택해요.
         </h1>
-        <p style={{ fontSize: 13, color: "#5B6478", margin: "0 0 24px" }}>
+        <p
+          style={{
+            fontSize: 13,
+            color: "#5B6478",
+            margin: "0 0 24px",
+            textAlign: "left",
+          }}
+        >
           각 경로의 장단점과 나에게 중요한 기준을 비교해 보세요.
         </p>
 
