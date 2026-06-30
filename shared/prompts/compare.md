@@ -12,15 +12,14 @@
 사용자(대학생)의 목표(goal), 중요 기준(criteria), 걱정거리(concerns)에 비추어 각 경로를 평가합니다.
 
 각 경로마다 다음을 분석합니다:
-- score: 목표 달성에 얼마나 적합한지 0~100 정수 점수.
+- summary: 경로를 한 줄로 요약 (카드 표시용).
 - pros: 장점 (최대 3개).
 - cons: 단점 (최대 3개).
 - risk: 위험도. level은 안정="green" / 보통="yellow" / 위험="red".
         reasons는 위험 사유 (최대 3개). 사용자의 걱정거리(concerns)를 우선 반영한다.
 - todoBurden: 지금 당장 해야 할 일의 부담. level은 적음="green" / 보통="yellow" / 많음="red".
               items는 해야 할 일 (최대 3개).
-- fallback: 실패 시 대안. 대안이 충분하면 "green", 부족하면 "red".
-            items는 대안 (최대 3개).
+- fallback: 실패 시 대안 텍스트 리스트 (최대 3개). 신호등 level 없이 문자열 배열로만 작성한다.
 
 규칙:
 - level 값은 반드시 "green", "yellow", "red" 중 하나만 사용한다.
@@ -63,7 +62,7 @@
           "type": "object",
           "properties": {
             "routeId": { "type": "string" },
-            "score": { "type": "integer" },
+            "summary": { "type": "string" },
             "pros": { "type": "array", "items": { "type": "string" } },
             "cons": { "type": "array", "items": { "type": "string" } },
             "risk": {
@@ -90,22 +89,11 @@
               "required": ["level", "items"],
               "additionalProperties": false
             },
-            "fallback": {
-              "type": "object",
-              "properties": {
-                "level": {
-                  "type": "string",
-                  "enum": ["green", "yellow", "red"]
-                },
-                "items": { "type": "array", "items": { "type": "string" } }
-              },
-              "required": ["level", "items"],
-              "additionalProperties": false
-            }
+            "fallback": { "type": "array", "items": { "type": "string" } }
           },
           "required": [
             "routeId",
-            "score",
+            "summary",
             "pros",
             "cons",
             "risk",
@@ -129,7 +117,7 @@
   "comparison": [
     {
       "routeId": "route-1",
-      "score": 82,
+      "summary": "취업 안정성과 실무 경험을 함께 노리는 균형형 경로",
       "pros": ["전공 경험을 쌓고 취업 안정성 확보", "졸업 후 바로 취업 가능"],
       "cons": ["인턴·취업 동시 준비로 부담이 큼"],
       "risk": { "level": "yellow", "reasons": ["서류/코테 불합격 가능"] },
@@ -137,7 +125,7 @@
         "level": "yellow",
         "items": ["자기소개서 작성", "코딩테스트 준비"]
       },
-      "fallback": { "level": "green", "items": ["졸업 유예 후 재도전"] }
+      "fallback": ["졸업 유예 후 재도전", "대학원 진학으로 전환"]
     }
   ]
 }
