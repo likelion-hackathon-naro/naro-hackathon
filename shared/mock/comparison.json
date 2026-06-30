@@ -1,0 +1,58 @@
+{
+  "comparison": [
+    {
+      "routeId": "route-1",
+      "score": 82,
+      "pros": ["인턴 실무 경험으로 취업 경쟁력 상승", "졸업 후 바로 취업 가능", "전공을 실무에 바로 활용"],
+      "cons": ["인턴과 취업 준비를 동시에 해야 함", "학점 관리 부담"],
+      "risk": {
+        "level": "yellow",
+        "reasons": ["서류/코테 불합격 가능", "인턴 합격 불확실"]
+      },
+      "todoBurden": {
+        "level": "yellow",
+        "items": ["자기소개서 작성", "코딩테스트 준비", "포트폴리오 정리"]
+      },
+      "fallback": {
+        "level": "green",
+        "items": ["졸업 유예 후 재도전", "대학원 진학으로 전환"]
+      }
+    },
+    {
+      "routeId": "route-2",
+      "score": 70,
+      "pros": ["전공 전문성을 깊이 쌓음", "연구·개발 직군에 유리"],
+      "cons": ["취업이 2년 이상 늦어짐", "학비 부담"],
+      "risk": {
+        "level": "yellow",
+        "reasons": ["연구실 컨택 실패 가능", "적성과 안 맞을 위험"]
+      },
+      "todoBurden": {
+        "level": "green",
+        "items": ["관심 연구실 조사", "교수님 면담 신청"]
+      },
+      "fallback": {
+        "level": "yellow",
+        "items": ["취업으로 전환", "전공 살린 인턴 지원"]
+      }
+    },
+    {
+      "routeId": "route-3",
+      "score": 58,
+      "pros": ["빠르게 취업 시작", "경제적 자립 가능"],
+      "cons": ["실무 경험 없이 취업 경쟁력 약함", "전공 활용도 낮을 수 있음"],
+      "risk": {
+        "level": "red",
+        "reasons": ["스펙 부족으로 서류 탈락 위험", "준비 기간 부족"]
+      },
+      "todoBurden": {
+        "level": "red",
+        "items": ["자기소개서 작성", "코딩테스트 준비", "직무 분석"]
+      },
+      "fallback": {
+        "level": "red",
+        "items": ["선택 시 대안이 거의 없음"]
+      }
+    }
+  ]
+}
