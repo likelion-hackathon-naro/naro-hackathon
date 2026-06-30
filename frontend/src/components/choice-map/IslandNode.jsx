@@ -23,7 +23,10 @@ export default function IslandNode({
         isSelected ? "island-node--selected" : "",
         isClickable ? "island-node--clickable" : "",
       ].join(" ")}
-      style={{ left: node.x, top: node.y }}
+      style={{
+        left: `${(node.x / 1080) * 100}%`,
+        top: `${(node.y / 560) * 100}%`,
+      }}
       onClick={() => onClick?.(node.id)}
       disabled={!isClickable}
     >
