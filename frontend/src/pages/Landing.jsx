@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { structureWorryText } from "../api/structure";
 import "./Landing.css";
 
 const EXAMPLE_CHIPS = [
@@ -19,22 +20,19 @@ function DecorativeIsland({ className = "" }) {
   );
 }
 
-function buildInitialData(rawText) {
-  return {
-    rawText,
-    goal: "2028년 2월 졸업",
-    current: ["2026년 여름", "산학협력 프로젝트", "웹개발 해커톤"],
-    options: ["포트폴리오 강화", "휴학", "교환학생 준비", "겨울 인턴"],
-    criteria: ["졸업 시점 유지", "실무 경험", "방향성", "번아웃 방지"],
-    concerns: ["교환학생이나 인턴이 잘 되지 않았을 때 계획 수정"],
-  };
-}
-
 export default function Landing({ onStart }) {
   const [rawText, setRawText] = useState("");
+  const [isStructuring, setIsStructuring] = useState(false);
 
-  const submit = () => {
-    onStart(buildInitialData(rawText.trim()));
+  const submit = async () => {
+    const trimmedRawText = rawText.trim();
+
+    if (!trimmedRawText || isStructuring) return;
+
+    setIsStructuring(true);
+    const structuredData = await structureWorryText(trimmedRawText);
+    setIsStructuring(false);
+    onStart(structuredData);
   };
 
   return (
@@ -66,6 +64,7 @@ export default function Landing({ onStart }) {
             value={rawText}
             maxLength={500}
             onChange={(e) => setRawText(e.target.value)}
+            readOnly={isStructuring}
             placeholder="지금 가장 고민되는 선택이나 목표를 자유롭게 입력해 보세요."
           />
           <div className="landing-input-card__examples">
@@ -91,9 +90,10 @@ export default function Landing({ onStart }) {
               type="button"
               className="landing-submit"
               onClick={submit}
+              disabled={!rawText.trim() || isStructuring}
               aria-label="고민 입력 시작"
             >
-              ↑
+              {isStructuring ? "…" : "↑"}
             </button>
           </div>
         </div>

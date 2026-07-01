@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import TagListField from "../components/worry-input/TagListField";
+import { structureWorryText } from "../api/structure";
 import "./WorryInput.css";
 
 const INITIAL_DATA = {
@@ -22,14 +23,15 @@ function toStringList(value) {
 }
 
 function normalizeInitialData(initialData = {}) {
+  const concerns = toStringList(initialData.concerns);
+
   return {
     ...INITIAL_DATA,
     ...initialData,
     current: toStringList(initialData.current ?? initialData.inProgress),
-    options: initialData.options ?? initialData.choices ?? [],
-    concerns:
-      initialData.concerns ??
-      (initialData.concern ? [initialData.concern] : []),
+    options: toStringList(initialData.options ?? initialData.choices),
+    criteria: toStringList(initialData.criteria),
+    concerns: concerns.length ? concerns : toStringList(initialData.concern),
   };
 }
 
@@ -42,8 +44,11 @@ function normalizeInitialData(initialData = {}) {
  */
 export default function WorryInput({ initialData, onSubmit }) {
   const rawTextRef = useRef(null);
+  const structureRequestIdRef = useRef(0);
   const [data, setData] = useState(() => normalizeInitialData(initialData));
   const [isEditingRawText, setIsEditingRawText] = useState(false);
+  const [isStructuring, setIsStructuring] = useState(false);
+  const [structureNotice, setStructureNotice] = useState("");
 
   const updateField = (key, value) => {
     setData((prev) => ({ ...prev, [key]: value }));
@@ -52,7 +57,8 @@ export default function WorryInput({ initialData, onSubmit }) {
   const missingFields = [
     !data.goal.trim() && "최종 목표",
     data.current.length === 0 && "현재 상황",
-    data.options.length === 0 && "고민 중인 선택지",
+    data.options.length <= 1 && "고민 중인 선택지",
+    data.criteria.length <= 1 && "중요하게 생각하는 기준",
   ].filter(Boolean);
   const shortageWarnings = [
     data.options.length <= 1 && {
@@ -64,7 +70,43 @@ export default function WorryInput({ initialData, onSubmit }) {
       example: "예: 졸업 시점, 성장가능성, 돈",
     },
   ].filter(Boolean);
-  const isValid = data.goal.trim() && data.options.length > 0;
+  const isValid =
+    data.goal.trim() &&
+    data.current.length > 0 &&
+    data.options.length > 1 &&
+    data.criteria.length > 1 &&
+    !isStructuring &&
+    !isEditingRawText;
+
+  const applyStructuredData = async (rawTextToStructure, showNotice = false) => {
+    const trimmedRawText = rawTextToStructure.trim();
+    const requestId = structureRequestIdRef.current + 1;
+    structureRequestIdRef.current = requestId;
+
+    if (!trimmedRawText) {
+      setStructureNotice("고민 내용을 먼저 입력해주세요.");
+      return;
+    }
+
+    setIsStructuring(true);
+    if (!showNotice) setStructureNotice("");
+
+    const structuredData = await structureWorryText(trimmedRawText);
+
+    if (requestId !== structureRequestIdRef.current) return;
+
+    setData((prev) =>
+      normalizeInitialData({
+        ...prev,
+        ...structuredData,
+        rawText: prev.rawText,
+      }),
+    );
+    setIsStructuring(false);
+    if (showNotice) {
+      setStructureNotice("수정한 고민을 다시 정리했어요.");
+    }
+  };
 
   const submitData = () => {
     onSubmit({
@@ -78,13 +120,17 @@ export default function WorryInput({ initialData, onSubmit }) {
   };
 
   const toggleRawTextEdit = () => {
-    setIsEditingRawText((prev) => {
-      const next = !prev;
-      if (!prev) {
-        requestAnimationFrame(() => rawTextRef.current?.focus());
-      }
-      return next;
-    });
+    if (isStructuring) return;
+
+    if (!isEditingRawText) {
+      setIsEditingRawText(true);
+      setStructureNotice("");
+      requestAnimationFrame(() => rawTextRef.current?.focus());
+      return;
+    }
+
+    setIsEditingRawText(false);
+    applyStructuredData(data.rawText, true);
   };
 
   return (
@@ -117,8 +163,9 @@ export default function WorryInput({ initialData, onSubmit }) {
               isEditingRawText ? "worry-input-card__edit-btn--active" : "",
             ].join(" ")}
             onClick={toggleRawTextEdit}
+            disabled={isStructuring}
           >
-            {isEditingRawText ? "수정 완료" : "수정하기"}
+            {isStructuring ? "정리 중..." : isEditingRawText ? "수정 완료" : "수정하기"}
           </button>
 
           {shortageWarnings.length > 0 && (
@@ -136,7 +183,22 @@ export default function WorryInput({ initialData, onSubmit }) {
           )}
         </div>
 
-        <div className="worry-input-card__right">
+        <div
+          className={[
+            "worry-input-card__right",
+            isStructuring ? "worry-input-card__right--loading" : "",
+          ].join(" ")}
+        >
+          {isStructuring && (
+            <div className="worry-input-card__loading">
+              로딩중입니다. 입력한 고민을 다시 정리하고 있어요.
+            </div>
+          )}
+          {!isStructuring && structureNotice && (
+            <div className="worry-input-card__sync-notice">
+              {structureNotice}
+            </div>
+          )}
           <div className="worry-input-card__edit-guide">
             아래 내용은 직접 수정, 추가, 삭제할 수 있어요.
           </div>
@@ -188,9 +250,6 @@ export default function WorryInput({ initialData, onSubmit }) {
       </div>
 
       <div className="worry-input-footer">
-        <button type="button" className="btn btn--ghost">
-          이전으로
-        </button>
         <button
           type="button"
           className="btn btn--primary"

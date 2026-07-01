@@ -108,6 +108,10 @@
   color: #8a98ad;
 }
 
+.landing-input-card textarea[readonly] {
+  color: #66758d;
+}
+
 .landing-input-card__examples {
   margin-top: 22px;
 }
@@ -175,6 +179,12 @@
   font-size: 23px;
   font-weight: 900;
   box-shadow: 0 14px 26px rgba(59, 108, 246, 0.28);
+}
+
+.landing-submit:disabled {
+  background: #c4cee8;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .landing-input-card__footer span {
