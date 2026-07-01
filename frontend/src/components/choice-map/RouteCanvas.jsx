@@ -74,11 +74,13 @@ export default function RouteCanvas({
         {nodes.map((node) => {
           const orderInCurrent = currentPath.indexOf(node.id);
           const isChoice = node.type === "choice";
+          const isRouteStart = isAdding && node.type === "start";
           return (
             <IslandNode
               key={node.id}
               node={node}
               isClickable={isAdding && isChoice}
+              isRouteStart={isRouteStart}
               isSelected={orderInCurrent !== -1}
               order={orderInCurrent !== -1 ? orderInCurrent + 1 : null}
               onClick={onNodeClick}

@@ -8,10 +8,13 @@ import "./TagListField.css";
  * @param {string} label
  * @param {string[]} tags
  * @param {(nextTags: string[]) => void} onChange
+ * @param {boolean} isWarning
  */
-export default function TagListField({ label, tags, onChange }) {
+export default function TagListField({ label, tags, onChange, isWarning = false }) {
   const [draft, setDraft] = useState("");
   const [isAdding, setIsAdding] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editingDraft, setEditingDraft] = useState("");
 
   const commitDraft = () => {
     const value = draft.trim();
@@ -26,6 +29,24 @@ export default function TagListField({ label, tags, onChange }) {
     onChange(tags.filter((_, i) => i !== idx));
   };
 
+  const startEdit = (idx) => {
+    setIsAdding(false);
+    setEditingIndex(idx);
+    setEditingDraft(tags[idx]);
+  };
+
+  const commitEdit = () => {
+    if (editingIndex == null) return;
+    const value = editingDraft.trim();
+    if (!value) {
+      removeTag(editingIndex);
+    } else {
+      onChange(tags.map((tag, idx) => (idx === editingIndex ? value : tag)));
+    }
+    setEditingIndex(null);
+    setEditingDraft("");
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -37,21 +58,56 @@ export default function TagListField({ label, tags, onChange }) {
     }
   };
 
+  const handleEditKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      commitEdit();
+    }
+    if (e.key === "Escape") {
+      setEditingIndex(null);
+      setEditingDraft("");
+    }
+  };
+
   return (
-    <div className="field-row">
-      <span className="field-row__label">{label}</span>
+    <div className={["field-row", isWarning ? "field-row--warning" : ""].join(" ")}>
+      <span className="field-row__label">
+        {label}
+        {isWarning && <span className="field-row__warning-mark">!</span>}
+      </span>
       <div className="tag-list">
         {tags.map((tag, idx) => (
           <span className="tag" key={`${tag}-${idx}`}>
-            {tag}
-            <button
-              type="button"
-              className="tag__remove"
-              aria-label={`${tag} 삭제`}
-              onClick={() => removeTag(idx)}
-            >
-              ×
-            </button>
+            {editingIndex === idx ? (
+              <input
+                autoFocus
+                className="tag__edit-input"
+                value={editingDraft}
+                onChange={(e) => setEditingDraft(e.target.value)}
+                onKeyDown={handleEditKeyDown}
+                onBlur={commitEdit}
+              />
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className="tag__text"
+                  onClick={() => startEdit(idx)}
+                  aria-label={`${tag} 수정`}
+                  title="클릭해서 수정"
+                >
+                  {tag}
+                </button>
+                <button
+                  type="button"
+                  className="tag__remove"
+                  aria-label={`${tag} 삭제`}
+                  onClick={() => removeTag(idx)}
+                >
+                  ×
+                </button>
+              </>
+            )}
           </span>
         ))}
 

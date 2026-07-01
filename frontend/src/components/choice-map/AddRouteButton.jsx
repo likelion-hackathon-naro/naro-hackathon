@@ -3,6 +3,7 @@ import "./AddRouteButton.css";
 /**
  * @param {boolean} isAdding
  * @param {number} currentPathLength
+ * @param {string} routeMessage
  * @param {() => void} onStart
  * @param {() => void} onUndo
  * @param {() => void} onCancel
@@ -11,6 +12,7 @@ import "./AddRouteButton.css";
 export default function AddRouteButton({
   isAdding,
   currentPathLength,
+  routeMessage,
   onStart,
   onUndo,
   onCancel,
@@ -18,9 +20,14 @@ export default function AddRouteButton({
 }) {
   if (!isAdding) {
     return (
-      <button type="button" className="add-route-btn" onClick={onStart}>
-        + 경로 만들기
-      </button>
+      <div className="add-route-area">
+        <button type="button" className="add-route-btn" onClick={onStart}>
+          + 경로 만들기
+        </button>
+        {routeMessage && (
+          <span className="add-route-message">{routeMessage}</span>
+        )}
+      </div>
     );
   }
 

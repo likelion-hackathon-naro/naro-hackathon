@@ -8,44 +8,6 @@ const EXAMPLE_CHIPS = [
   "어떤 커리어를 쌓고 싶은지 모르겠어요",
 ];
 
-const SAMPLE_CARDS = [
-  {
-    tag: "진로 고민",
-    title: "이직할까, 지금 회사에 남을까?",
-    color: "blue",
-  },
-  {
-    tag: "커리어 선택",
-    title: "전공을 살릴까, 새로운 분야에 도전할까?",
-    color: "green",
-  },
-  {
-    tag: "진학 vs 취업",
-    title: "대학원을 진학할까, 취업할까?",
-    color: "purple",
-  },
-  {
-    tag: "단기 로드맵",
-    title: "알찬 방학을 보내고 싶은데, 하고 싶은 게 너무 많아.",
-    color: "orange",
-  },
-];
-
-function MiniMap({ color = "blue" }) {
-  return (
-    <div className={`mini-map mini-map--${color}`} aria-hidden="true">
-      <span className="mini-map__route" />
-      <span className="mini-map__island mini-map__island--a">
-        <span className="mini-map__flag" />
-      </span>
-      <span className="mini-map__island mini-map__island--b">
-        <span className="mini-map__flag mini-map__flag--muted" />
-      </span>
-      <span className="mini-map__start" />
-    </div>
-  );
-}
-
 function DecorativeIsland({ className = "" }) {
   return (
     <span className={`landing-island ${className}`} aria-hidden="true">
@@ -61,7 +23,7 @@ function buildInitialData(rawText) {
   return {
     rawText,
     goal: "2028년 2월 졸업",
-    current: "2026년 여름, 산학협력 프로젝트와 웹개발 해커톤 진행 중",
+    current: ["2026년 여름", "산학협력 프로젝트", "웹개발 해커톤"],
     options: ["포트폴리오 강화", "휴학", "교환학생 준비", "겨울 인턴"],
     criteria: ["졸업 시점 유지", "실무 경험", "방향성", "번아웃 방지"],
     concerns: ["교환학생이나 인턴이 잘 되지 않았을 때 계획 수정"],
@@ -81,12 +43,6 @@ export default function Landing({ onStart }) {
         <button type="button" className="landing-logo" onClick={() => setRawText("")}>
           나로<span>▶</span>
         </button>
-        <nav className="landing-nav" aria-label="주요 메뉴">
-          <a href="#service">서비스 소개</a>
-          <a href="#how">이용 방법</a>
-          <a href="#blog">블로그</a>
-          <button type="button">로그인</button>
-        </nav>
       </header>
 
       <DecorativeIsland className="landing-island--left" />
@@ -140,29 +96,6 @@ export default function Landing({ onStart }) {
               ↑
             </button>
           </div>
-        </div>
-      </section>
-
-      <section className="landing-examples" id="how">
-        <div className="landing-examples__heading">
-          <h2>나로로 보는 고민의 예시</h2>
-          <p>다양한 선택을 지도 위에서 비교해 보세요.</p>
-        </div>
-        <div className="landing-example-grid">
-          {SAMPLE_CARDS.map((card) => (
-            <article className="landing-example-card" key={card.title}>
-              <div>
-                <span className={`landing-example-card__tag landing-example-card__tag--${card.color}`}>
-                  {card.tag}
-                </span>
-                <button type="button" aria-label={`${card.title} 보기`}>
-                  ›
-                </button>
-              </div>
-              <h3>{card.title}</h3>
-              <MiniMap color={card.color} />
-            </article>
-          ))}
         </div>
       </section>
     </main>

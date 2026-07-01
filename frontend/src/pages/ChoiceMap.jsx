@@ -17,7 +17,11 @@ function buildChoiceMapData(worryData) {
     : ["포트폴리오 강화", "휴학", "교환학생 준비"];
 
   const goalLabel = worryData?.goal || "목표";
-  const currentLabel = worryData?.current || "현재 상황";
+  const currentItems = Array.isArray(worryData?.current)
+    ? worryData.current
+    : worryData?.current
+      ? [worryData.current]
+      : ["현재 상황"];
 
   const positions = [
     { x: 370, y: 205 },
@@ -37,7 +41,14 @@ function buildChoiceMapData(worryData) {
   return {
     options: options.map((title, idx) => ({ id: `opt-${idx + 1}`, title })),
     nodes: [
-      { id: "start", type: "start", label: "현재", meta: currentLabel, x: 130, y: 405 },
+      {
+        id: "start",
+        type: "start",
+        label: "현재",
+        metaItems: currentItems,
+        x: 150,
+        y: 360,
+      },
       ...choiceNodes,
       { id: "goal", type: "goal", label: goalLabel, x: 940, y: 405 },
     ],
@@ -56,6 +67,7 @@ export default function ChoiceMap({ worryData }) {
     routes,
     selectedRouteId,
     favoriteRouteIds,
+    routeMessage,
     startAdding,
     cancelAdding,
     selectNode,
@@ -109,6 +121,7 @@ export default function ChoiceMap({ worryData }) {
           <AddRouteButton
             isAdding={isAdding}
             currentPathLength={currentPath.length}
+            routeMessage={routeMessage}
             onStart={startAdding}
             onUndo={undoLastNode}
             onCancel={cancelAdding}

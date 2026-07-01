@@ -45,7 +45,7 @@
 .worry-input-card__raw-text {
   flex: 1;
   resize: none;
-  border: none;
+  border: 1px solid transparent;
   background: #fafbfd;
   border-radius: var(--radius-md);
   padding: 16px;
@@ -55,17 +55,100 @@
   min-height: 280px;
   font-family: inherit;
   outline: none;
+  transition:
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    background 0.16s ease;
 }
 
-.worry-input-card__hint {
+.worry-input-card__raw-text[readonly] {
+  cursor: default;
+}
+
+.worry-input-card__raw-text--editing {
+  border-color: var(--color-primary);
+  background: #f7fbff;
+  box-shadow: 0 0 0 4px var(--color-primary-soft);
+}
+
+.worry-input-card__edit-btn {
+  align-self: flex-start;
   margin-top: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  color: var(--color-primary-dark);
+  cursor: pointer;
+  font-family: inherit;
   font-size: 12px;
-  color: var(--color-text-faint);
+  font-weight: 800;
+  padding: 7px 12px;
+}
+
+.worry-input-card__edit-btn:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.worry-input-card__edit-btn--active {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.worry-input-card__shortage {
+  margin-top: 12px;
+  border: 1px solid #ffc8d0;
+  border-radius: var(--radius-md);
+  background: #fff7f8;
+  color: #b42335;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.worry-input-card__shortage strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.worry-input-card__shortage ul {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.worry-input-card__shortage li {
+  color: #6f2a34;
+}
+
+.worry-input-card__shortage li span {
+  display: block;
+  color: #b42335;
+  font-weight: 800;
 }
 
 .worry-input-card__right {
   display: flex;
   flex-direction: column;
+}
+
+.worry-input-card__edit-guide {
+  text-align: left;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fbfdff;
+  color: var(--color-text-sub);
+  padding: 11px 14px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .worry-input-card__notice {
