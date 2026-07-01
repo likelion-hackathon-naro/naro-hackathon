@@ -1,7 +1,6 @@
+import { useState } from "react";
 import SignalBadge from "./SignalBadge";
 import TextList from "./TextList";
-
-// routes: [{ id, title, color, pros, cons, risk: {level, reasons}, taskLoad: {level, tasks}, fallback: {level, options} }]
 
 const ROW_CONFIG = [
   {
@@ -18,26 +17,52 @@ const ROW_CONFIG = [
     type: "list-only",
     listType: "con",
   },
-  { key: "risk", label: "리스크", icon: "⚠️", type: "signal" },
-  { key: "taskLoad", label: "할 일 부담", icon: "📋", type: "signal" },
-  { key: "fallback", label: "실패 시 대안", icon: "🔄", type: "signal" },
+  { key: "risk", label: "리스크", icon: "⚠️", type: "signal-toggle" },
+  { key: "taskLoad", label: "할 일 부담", icon: "📋", type: "signal-toggle" },
+  { key: "fallback", label: "실패 시 대안", icon: "🔄", type: "list-only-dot" },
 ];
 
 function Cell({ route, row }) {
+  const [open, setOpen] = useState(false);
+
   if (row.type === "list-only") {
     return <TextList items={route[row.key]} type={row.listType} />;
   }
 
-  // signal type: { level, reasons | tasks | options }
+  // 실패 시 대안 - 뱃지 없이 텍스트만
+  if (row.type === "list-only-dot") {
+    const data = route[row.key];
+    const items = data?.options || data?.reasons || data?.tasks || [];
+    return <TextList items={items} type="dot" />;
+  }
+
+  // 리스크 / 할 일 부담 - 뱃지 누르면 토글
   const data = route[row.key];
   if (!data) return null;
-
   const items = data.reasons || data.tasks || data.options || [];
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-      <SignalBadge level={data.level} label={data.label} />
-      <TextList items={items} type="dot" />
+      <div
+        onClick={() => setOpen((prev) => !prev)}
+        style={{
+          cursor: "pointer",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          width: "fit-content",
+        }}
+      >
+        <SignalBadge level={data.level} label={data.label} />
+        <span style={{ fontSize: 11, color: "#94A3B8" }}>
+          {open ? "▲" : "▼"}
+        </span>
+      </div>
+      {open && (
+        <div style={{ marginTop: 4 }}>
+          <TextList items={items} type="dot" />
+        </div>
+      )}
     </div>
   );
 }
@@ -111,7 +136,7 @@ export default function CompareTable({ routes }) {
           style={{
             display: "grid",
             gridTemplateColumns: `160px repeat(${routes.length}, minmax(0, 1fr))`,
-            padding: "15px 24px",
+            padding: "10px 24px",
             gap: 10,
             borderBottom:
               idx < ROW_CONFIG.length - 1 ? "0.5px solid #F1F5FB" : "none",

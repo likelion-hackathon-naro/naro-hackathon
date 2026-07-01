@@ -16,25 +16,30 @@ export default function RouteComparePage({
   return (
     <div
       style={{
-        minHeight: "100vh",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
         background: "#F3F5F9",
         fontFamily: FONT_STACK,
+        overflow: "hidden",
       }}
     >
+      {/* nav */}
       <nav
         style={{
           background: "#fff",
           borderBottom: "0.5px solid #E2E8F4",
-          padding: "0 40px",
-          height: 52,
+          padding: "0 32px",
+          height: 44,
           display: "flex",
           alignItems: "center",
+          flexShrink: 0,
         }}
       >
         <span
           style={{
             fontWeight: 700,
-            fontSize: 17,
+            fontSize: 16,
             color: "#3B6FE0",
             letterSpacing: "-0.02em",
           }}
@@ -43,55 +48,41 @@ export default function RouteComparePage({
         </span>
       </nav>
 
-      <div
-        style={{
-          maxWidth: "none",
-          margin: "0 auto",
-          padding: "32px 2.5vw 64px",
-        }}
-      >
+      {/* 콘텐츠 - flex grow로 남은 높이 채움 */}
+      <div style={{ flex: 1, overflow: "auto", padding: "12px 2.5vw 12px" }}>
         <div
           style={{
-            fontSize: 12,
+            fontSize: 11,
             color: "#5B6478",
-            marginBottom: 18,
+            marginBottom: 4,
             cursor: "pointer",
-            textAlign: "left",
           }}
         >
           ← 지도 보기로 돌아가기
         </div>
-
         <h1
           style={{
-            fontSize: 23,
+            fontSize: 18,
             fontWeight: 700,
             color: "#16213E",
-            margin: "0 0 4px",
-            lineHeight: 1.35,
+            margin: "0 0 2px",
+            lineHeight: 1.3,
             letterSpacing: "-0.02em",
-            textAlign: "left",
           }}
         >
           여러 길을 비교하고, 지금의 나에게 맞는 길을 선택해요.
         </h1>
-        <p
-          style={{
-            fontSize: 13,
-            color: "#5B6478",
-            margin: "0 0 24px",
-            textAlign: "left",
-          }}
-        >
+        <p style={{ fontSize: 11, color: "#5B6478", margin: "0 0 10px" }}>
           각 경로의 장단점과 나에게 중요한 기준을 비교해 보세요.
         </p>
 
+        {/* 경로 카드 */}
         <div
           style={{
             display: "grid",
             gridTemplateColumns: `repeat(${routes.length}, minmax(0, 1fr))`,
-            gap: 16,
-            marginBottom: 28,
+            gap: 10,
+            marginBottom: 10,
           }}
         >
           {routes.map((route) => (
@@ -106,22 +97,22 @@ export default function RouteComparePage({
 
         <CompareTable routes={routes} />
 
-        {/* 메인 경로 설정 CTA */}
+        {/* CTA */}
         <div
           style={{
             background: "#fff",
-            borderRadius: 12,
+            borderRadius: 10,
             border: "0.5px solid #E2E8F4",
-            padding: "22px 28px",
+            padding: "10px 16px",
             display: "flex",
             alignItems: "center",
-            gap: 18,
+            gap: 12,
           }}
         >
           <div
             style={{
-              width: 44,
-              height: 44,
+              width: 32,
+              height: 32,
               borderRadius: "50%",
               background: "#3B6FE0",
               flexShrink: 0,
@@ -129,8 +120,7 @@ export default function RouteComparePage({
               alignItems: "center",
               justifyContent: "center",
               color: "#fff",
-              fontWeight: 700,
-              fontSize: 16,
+              fontSize: 14,
             }}
           >
             🚩
@@ -139,19 +129,16 @@ export default function RouteComparePage({
             <div
               style={{
                 fontWeight: 700,
-                fontSize: 14,
+                fontSize: 13,
                 color: "#16213E",
-                marginBottom: 3,
+                marginBottom: 1,
               }}
             >
               이 길을 나의 메인 경로로 설정할까요?
             </div>
-            <div style={{ fontSize: 12, color: "#5B6478", marginBottom: 2 }}>
+            <div style={{ fontSize: 11, color: "#5B6478" }}>
               선택한 경로는 내 여정의 중심이 되어 계획과 알림이 맞춤으로
               제공돼요.
-            </div>
-            <div style={{ fontSize: 11, color: "#94A3B8" }}>
-              ⓘ 언제든지 다른 경로로 변경할 수 있어요.
             </div>
           </div>
           <button
@@ -162,16 +149,16 @@ export default function RouteComparePage({
               color: "#fff",
               border: "none",
               borderRadius: 8,
-              padding: "11px 22px",
+              padding: "8px 18px",
               fontWeight: 600,
-              fontSize: 13,
+              fontSize: 12,
               cursor: "pointer",
               whiteSpace: "nowrap",
               flexShrink: 0,
               fontFamily: FONT_STACK,
             }}
           >
-            Route {selectedId}를 메인 경로로 설정
+            경로 {selectedId}를 메인 경로로 설정
           </button>
         </div>
       </div>
