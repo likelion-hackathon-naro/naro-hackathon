@@ -19,7 +19,7 @@ export default function AddRouteButton({
   if (!isAdding) {
     return (
       <button type="button" className="add-route-btn" onClick={onStart}>
-        + 경로 추가
+        + 경로 만들기
       </button>
     );
   }
@@ -27,7 +27,7 @@ export default function AddRouteButton({
   return (
     <div className="add-route-controls">
       <span className="add-route-controls__hint">
-        섬을 순서대로 클릭해 경로를 만들어 보세요 ({currentPathLength}개 선택됨)
+        선택지 섬을 순서대로 클릭해요 ({currentPathLength}개 선택됨)
       </span>
       <div className="add-route-controls__buttons">
         <button
@@ -45,7 +45,7 @@ export default function AddRouteButton({
           type="button"
           className="btn btn--primary"
           onClick={onFinish}
-          disabled={currentPathLength < 2}
+          disabled={currentPathLength < 1}
         >
           경로 완성
         </button>

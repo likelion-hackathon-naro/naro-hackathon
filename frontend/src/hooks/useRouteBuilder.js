@@ -7,8 +7,10 @@ let routeIdCounter = 1;
  */
 export default function useRouteBuilder() {
   const [isAdding, setIsAdding] = useState(false);
-  const [currentPath, setCurrentPath] = useState([]); // node id 배열
+  const [currentPath, setCurrentPath] = useState([]); // option id 배열
   const [routes, setRoutes] = useState([]);
+  const [selectedRouteId, setSelectedRouteId] = useState(null);
+  const [favoriteRouteIds, setFavoriteRouteIds] = useState([]);
 
   const startAdding = useCallback(() => {
     setIsAdding(true);
@@ -37,32 +39,54 @@ export default function useRouteBuilder() {
   }, []);
 
   const finishRoute = useCallback(() => {
-    if (currentPath.length < 2) return; // 최소 2개 노드는 있어야 경로
+    if (currentPath.length < 1) return;
+    const id = `route-${routeIdCounter++}`;
     setRoutes((prev) => [
       ...prev,
       {
-        id: routeIdCounter++,
+        id,
         name: `경로 ${prev.length + 1}`,
-        path: currentPath,
+        optionIds: currentPath,
       },
     ]);
+    setSelectedRouteId(id);
     setIsAdding(false);
     setCurrentPath([]);
   }, [currentPath]);
 
   const removeRoute = useCallback((routeId) => {
     setRoutes((prev) => prev.filter((r) => r.id !== routeId));
+    setFavoriteRouteIds((prev) => prev.filter((id) => id !== routeId));
+    setSelectedRouteId((prev) => (prev === routeId ? null : prev));
+  }, []);
+
+  const selectRoute = useCallback((routeId) => {
+    setSelectedRouteId(routeId);
+  }, []);
+
+  const toggleFavoriteRoute = useCallback((routeId) => {
+    setFavoriteRouteIds((prev) => {
+      if (prev.includes(routeId)) {
+        return prev.filter((id) => id !== routeId);
+      }
+      if (prev.length >= 3) return prev;
+      return [...prev, routeId];
+    });
   }, []);
 
   return {
     isAdding,
     currentPath,
     routes,
+    selectedRouteId,
+    favoriteRouteIds,
     startAdding,
     cancelAdding,
     selectNode,
     undoLastNode,
     finishRoute,
     removeRoute,
+    selectRoute,
+    toggleFavoriteRoute,
   };
 }

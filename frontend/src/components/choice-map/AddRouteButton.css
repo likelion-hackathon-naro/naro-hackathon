@@ -1,4 +1,5 @@
 .add-route-btn {
+  min-height: 44px;
   border: 1.5px dashed var(--color-primary);
   background: var(--color-primary-soft);
   color: var(--color-primary-dark);
@@ -14,6 +15,7 @@
 }
 
 .add-route-controls {
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -1,8 +1,8 @@
 .route-canvas {
   position: relative;
-  width: min(100%, 760px);
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
-  aspect-ratio: 1080 / 560;
   background:
     radial-gradient(circle at 20% 20%, #f3f7ff 0%, transparent 45%),
     radial-gradient(circle at 85% 75%, #eef6ff 0%, transparent 50%),

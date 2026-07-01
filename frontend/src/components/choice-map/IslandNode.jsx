@@ -40,6 +40,7 @@ export default function IslandNode({
       </span>
       {order != null && <span className="island-node__order">{order}</span>}
       <span className="island-node__label">{node.label}</span>
+      {node.meta && <span className="island-node__meta">{node.meta}</span>}
     </button>
   );
 }

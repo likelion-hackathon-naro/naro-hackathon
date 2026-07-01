@@ -68,6 +68,24 @@
   flex-direction: column;
 }
 
+.worry-input-card__notice {
+  text-align: left;
+  background: var(--color-primary-soft);
+  border: 1px solid #d6e2ff;
+  border-radius: var(--radius-md);
+  color: var(--color-primary-dark);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.worry-input-card__notice strong {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--color-primary-dark);
+}
+
 .field-row__text-input {
   flex: 1;
   border: 1px solid var(--color-border);
