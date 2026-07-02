@@ -1,7 +1,10 @@
 const express = require("express");
 const comparisonMock = require("../../../shared/mock/comparison.json");
+const { compareRoutesWithGemini } = require("../services/geminiService");
 
 const router = express.Router();
+
+const shouldUseMock = () => process.env.USE_MOCK !== "false";
 
 router.post("/", async (req, res) => {
   // Frontend 데이터 검증
@@ -59,10 +62,15 @@ router.post("/", async (req, res) => {
       typeof route === "object" &&
       !Array.isArray(route) &&
       typeof route.id === "string" &&
+      route.id.trim().length > 0 &&
       typeof route.name === "string" &&
+      route.name.trim().length > 0 &&
       Array.isArray(route.optionIds) &&
       route.optionIds.length > 0 &&
-      route.optionIds.every((optionId) => typeof optionId === "string") &&
+      route.optionIds.every(
+        (optionId) =>
+          typeof optionId === "string" && optionId.trim().length > 0,
+      ) &&
       typeof route.favorite === "boolean" &&
       route.favorite === true,
   );
@@ -88,10 +96,16 @@ router.post("/", async (req, res) => {
 
   const isValidContext =
     typeof context.goal === "string" &&
+    context.goal.trim().length > 0 &&
     Array.isArray(context.criteria) &&
-    context.criteria.every((criterion) => typeof criterion === "string") &&
+    context.criteria.every(
+      (criterion) =>
+        typeof criterion === "string" && criterion.trim().length > 0,
+    ) &&
     Array.isArray(context.concerns) &&
-    context.concerns.every((concern) => typeof concern === "string");
+    context.concerns.every(
+      (concern) => typeof concern === "string" && concern.trim().length > 0,
+    );
 
   if (!isValidContext) {
     return res.status(400).json({
@@ -101,14 +115,29 @@ router.post("/", async (req, res) => {
     });
   }
 
-  // TODO: AI 경로 비교 요청
-  // TODO: AI 경로 비교 결과 가공
+  if (shouldUseMock()) {
+    return res.status(200).json({
+      success: true,
+      data: comparisonMock,
+    });
+  }
 
-  // Frontend로 응답 전송
-  return res.status(200).json({
-    success: true,
-    data: comparisonMock,
-  });
+  try {
+    const comparisonData = await compareRoutesWithGemini(req.body);
+
+    return res.status(200).json({
+      success: true,
+      data: comparisonData,
+    });
+  } catch (error) {
+    console.error("compare-routes AI error:", error);
+
+    // AI 실패 시 mock fallback
+    return res.status(200).json({
+      success: true,
+      data: comparisonMock,
+    });
+  }
 });
 
 module.exports = router;
