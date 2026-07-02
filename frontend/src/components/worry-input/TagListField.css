@@ -1,0 +1,138 @@
+.field-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.field-row:last-child {
+  border-bottom: none;
+}
+
+.field-row__label {
+  flex: 0 0 130px;
+  padding-top: 6px;
+  color: var(--color-text-sub);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.field-row--warning .field-row__label {
+  color: #e0445b;
+  font-weight: 800;
+}
+
+.field-row__warning-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: #fff0f2;
+  color: #e0445b;
+  border: 1px solid #ffc8d0;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.tag-list {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-tag-bg);
+  border: 1px solid var(--color-tag-border);
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.field-row--warning .tag {
+  border-color: #ffc8d0;
+  background: #fff8f9;
+}
+
+.tag__text {
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1;
+  padding: 0;
+}
+
+.tag__text:hover {
+  color: var(--color-primary-dark);
+}
+
+.tag__edit-input {
+  width: 120px;
+  min-width: 80px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.tag__remove {
+  border: none;
+  background: none;
+  color: var(--color-text-faint);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+}
+
+.tag__remove:hover {
+  color: #e0445b;
+}
+
+.tag-list__add-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px dashed var(--color-tag-border);
+  background: #fff;
+  color: var(--color-text-faint);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.tag-list__add-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.field-row--warning .tag-list__add-btn {
+  border-color: #ffc8d0;
+  background: #fff8f9;
+  color: #e0445b;
+}
+
+.tag-list__draft-input {
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  padding: 7px 12px;
+  font-size: 14px;
+  outline: none;
+  min-width: 140px;
+}

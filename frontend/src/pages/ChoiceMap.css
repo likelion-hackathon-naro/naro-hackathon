@@ -1,0 +1,217 @@
+.choice-map-page {
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 82px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.choice-map-page__logo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 56px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding-left: 32px;
+  background: #fff;
+  border-bottom: 1px solid #edf1f7;
+  color: var(--color-primary);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.choice-map-page__logo span {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 12px solid var(--color-primary);
+  color: transparent;
+  font-size: 0;
+  transform: translateY(1px);
+}
+
+.choice-map-page__title {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 800;
+  margin: 14px 0 12px;
+  flex: 0 0 auto;
+}
+
+.choice-map-page__subtitle {
+  text-align: center;
+  color: var(--color-text-sub);
+  font-size: 14px;
+  margin: 0 0 34px;
+  flex: 0 0 auto;
+}
+
+.choice-map-card {
+  width: 100%;
+  flex: 0 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  max-width: none;
+  margin: 0 auto;
+  padding: 14px;
+}
+
+.choice-map-card__toolbar {
+  flex: 0 0 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: nowrap;
+  margin-bottom: 10px;
+  min-height: 52px;
+  max-height: 52px;
+  overflow: hidden;
+}
+
+.choice-map-card__summary {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--color-text-sub);
+  min-width: 0;
+  max-width: 54%;
+  overflow: hidden;
+}
+
+.choice-map-card__summary strong {
+  color: var(--color-text);
+  margin-right: 8px;
+  font-weight: 700;
+}
+
+.choice-map-card__body {
+  flex: 0 0 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 18px;
+  align-items: stretch;
+  height: clamp(470px, 60vh, 620px);
+}
+
+.choice-map-card__routes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  min-height: 0;
+  background: #f8fbff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  overflow: hidden;
+}
+
+.choice-map-card__routes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.choice-map-card__routes-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.choice-map-card__favorite-count {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+}
+
+.choice-map-card__route-detail {
+  text-align: left;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.choice-map-card__route-detail span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--color-text-faint);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.choice-map-card__route-detail strong {
+  display: block;
+  color: var(--color-text);
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.choice-map-card__route-detail p {
+  color: var(--color-text-sub);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.choice-map-card__analyze-btn {
+  width: 100%;
+  margin-top: auto;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  color: #fff;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.choice-map-card__analyze-btn:disabled {
+  background: #c4cee8;
+  cursor: not-allowed;
+}
+
+.choice-map-card__map {
+  min-width: 0;
+  height: 100%;
+}
+
+@media (max-width: 900px) {
+  .choice-map-page__logo {
+    height: 54px;
+    padding-left: 24px;
+    font-size: 18px;
+  }
+
+  .choice-map-card__body {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
+  }
+}
