@@ -102,6 +102,9 @@ export default function ChoiceMap({ worryData }) {
 
   return (
     <div className="choice-map-page">
+      <div className="choice-map-page__logo" aria-label="나로">
+        나로<span>▶</span>
+      </div>
       <h1 className="choice-map-page__title">선택지 지도가 완성됐어요</h1>
       <p className="choice-map-page__subtitle">
         섬을 순서대로 연결해 나만의 경로를 만들어 보세요.

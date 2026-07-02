@@ -58,7 +58,7 @@ export default function WorryInput({ initialData, onSubmit }) {
     !data.goal.trim() && "최종 목표",
     data.current.length === 0 && "현재 상황",
     data.options.length <= 1 && "고민 중인 선택지",
-    data.criteria.length <= 1 && "중요하게 생각하는 기준",
+    data.criteria.length <= 1 && "핵심 기준",
   ].filter(Boolean);
   const shortageWarnings = [
     data.options.length <= 1 && {
@@ -66,7 +66,7 @@ export default function WorryInput({ initialData, onSubmit }) {
       example: "예: 인턴, 휴학, 교환학생",
     },
     data.criteria.length <= 1 && {
-      title: "중요하게 생각하는 기준",
+      title: "핵심 기준",
       example: "예: 졸업 시점, 성장가능성, 돈",
     },
   ].filter(Boolean);
@@ -135,6 +135,9 @@ export default function WorryInput({ initialData, onSubmit }) {
 
   return (
     <div className="worry-input-page">
+      <div className="worry-input-page__logo" aria-label="나로">
+        나로<span>▶</span>
+      </div>
       <h1 className="worry-input-page__title">어떤 갈림길에 서 있나요?</h1>
       <p className="worry-input-page__subtitle">
         입력한 고민을 바탕으로 목표, 선택지, 조건을 정리해 드릴게요.
@@ -170,7 +173,7 @@ export default function WorryInput({ initialData, onSubmit }) {
 
           {shortageWarnings.length > 0 && (
             <div className="worry-input-card__shortage">
-              <strong>이러한 내용이 부족합니다. 조금 더 작성해주세요.</strong>
+              <strong>아래 내용이 부족합니다. 조금 더 작성해주세요.</strong>
               <ul>
                 {shortageWarnings.map((warning) => (
                   <li key={warning.title}>
@@ -235,7 +238,7 @@ export default function WorryInput({ initialData, onSubmit }) {
           />
 
           <TagListField
-            label="중요하게 생각하는 기준"
+            label="핵심 기준"
             tags={data.criteria}
             onChange={(next) => updateField("criteria", next)}
             isWarning={data.criteria.length <= 1}

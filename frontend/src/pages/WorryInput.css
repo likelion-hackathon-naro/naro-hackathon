@@ -1,7 +1,39 @@
 .worry-input-page {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 56px 24px 80px;
+  padding: 104px 24px 80px;
+}
+
+.worry-input-page__logo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 56px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding-left: 32px;
+  background: #fff;
+  border-bottom: 1px solid #edf1f7;
+  color: var(--color-primary);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.worry-input-page__logo span {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 12px solid var(--color-primary);
+  color: transparent;
+  font-size: 0;
+  transform: translateY(1px);
 }
 
 .worry-input-page__title {
@@ -264,6 +296,12 @@
 }
 
 @media (max-width: 768px) {
+  .worry-input-page__logo {
+    height: 54px;
+    padding-left: 24px;
+    font-size: 18px;
+  }
+
   .worry-input-card {
     grid-template-columns: 1fr;
   }

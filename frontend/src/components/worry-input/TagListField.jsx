@@ -10,7 +10,12 @@ import "./TagListField.css";
  * @param {(nextTags: string[]) => void} onChange
  * @param {boolean} isWarning
  */
-export default function TagListField({ label, tags, onChange, isWarning = false }) {
+export default function TagListField({
+  label,
+  tags,
+  onChange,
+  isWarning = false,
+}) {
   const [draft, setDraft] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -70,7 +75,12 @@ export default function TagListField({ label, tags, onChange, isWarning = false 
   };
 
   return (
-    <div className={["field-row", isWarning ? "field-row--warning" : ""].join(" ")}>
+    <div
+      className={[
+        "field-row",
+        isWarning ? "field-row--warning" : "",
+      ].join(" ")}
+    >
       <span className="field-row__label">
         {label}
         {isWarning && <span className="field-row__warning-mark">!</span>}
