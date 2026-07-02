@@ -52,7 +52,7 @@ export default function RouteComparePage({
       <div style={{ flex: 1, overflow: "auto", padding: "12px 2.5vw 12px" }}>
         <div
           style={{
-            fontSize: 11,
+            fontSize: 13,
             color: "#5B6478",
             marginBottom: 4,
             cursor: "pointer",
@@ -72,9 +72,7 @@ export default function RouteComparePage({
         >
           여러 길을 비교하고, 지금의 나에게 맞는 길을 선택해요.
         </h1>
-        <p style={{ fontSize: 11, color: "#5B6478", margin: "0 0 10px" }}>
-          각 경로의 장단점과 나에게 중요한 기준을 비교해 보세요.
-        </p>
+        <p style={{ fontSize: 11, color: "#5B6478", margin: "0 0 10px" }}></p>
 
         {/* 경로 카드 */}
         <div

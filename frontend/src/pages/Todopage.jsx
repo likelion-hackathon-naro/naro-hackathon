@@ -13,10 +13,25 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
     );
   };
 
+  const getStage = (completed, total) => {
+    if (total === 0 || completed === 0)
+      return { img: "/lion_0.png", msg: "아직 갈 길이 멀어요, 힘내요! 🌱" };
+    const pct = completed / total;
+    if (pct >= 1)
+      return {
+        img: "/lion_100.png",
+        msg: "모든 할 일을 완료했어요! 축하해요! 🎉",
+      };
+    if (pct >= 0.5)
+      return { img: "/lion_50.png", msg: "절반 왔어요! 잘 하고 있어요 💪" };
+    return { img: "/lion_25.png", msg: "조금씩 나아가고 있어요! 🔥" };
+  };
+
   const completedCount = todos.filter((t) => t.done).length;
   const totalCount = todos.length;
   const progressPct =
     totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+  const stage = getStage(completedCount, totalCount);
 
   return (
     <div
@@ -53,29 +68,30 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
         </span>
       </nav>
 
-      <div style={{ flex: 1, overflow: "auto", padding: "6px 2.5vw" }}>
+      <div style={{ flex: 1, overflow: "auto", padding: "0 2.5vw" }}>
         {/* 뒤로가기 */}
         <div
           style={{
             fontSize: 13,
             color: "#5B6478",
-            marginBottom: 4,
+            marginBottom: 2,
             cursor: "pointer",
+            paddingTop: 6,
           }}
         >
           ← 지도 보기로 돌아가기
         </div>
 
-        {/* 헤더 */}
+        {/* 헤더 - 텍스트 위쪽 정렬, 이미지 오른쪽 */}
         <div
           style={{
             display: "flex",
-            alignItems: "center",
+            alignItems: "flex-start",
             justifyContent: "space-between",
-            marginBottom: 4,
+            marginBottom: 10,
           }}
         >
-          <div>
+          <div style={{ paddingTop: 2 }}>
             <h1
               style={{
                 fontSize: 26,
@@ -91,11 +107,68 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
               작은 행동이 모여 목적지에 도착할 수 있어요.
             </p>
           </div>
-          <img
-            src="/lion_island.png"
-            alt="island"
-            style={{ height: 160, width: "auto", objectFit: "contain" }}
-          />
+
+          {/* 이미지 + 말풍선 */}
+          <div style={{ position: "relative", flexShrink: 0 }}>
+            <div
+              style={{
+                position: "absolute",
+                bottom: "65%",
+                right: "105%",
+                marginRight: 4,
+                background: "#fff",
+                border: "1.5px solid #E2E8F4",
+                borderRadius: 12,
+                padding: "7px 12px",
+                fontSize: 12,
+                fontWeight: 600,
+                color: "#16213E",
+                whiteSpace: "nowrap",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+              }}
+            >
+              {stage.msg}
+              <div
+                style={{
+                  position: "absolute",
+                  right: -8,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: 0,
+                  height: 0,
+                  borderTop: "6px solid transparent",
+                  borderBottom: "6px solid transparent",
+                  borderLeft: "8px solid #fff",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  right: -10,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: 0,
+                  height: 0,
+                  borderTop: "7px solid transparent",
+                  borderBottom: "7px solid transparent",
+                  borderLeft: "9px solid #E2E8F4",
+                  zIndex: -1,
+                }}
+              />
+            </div>
+            <img
+              src={stage.img}
+              alt="island"
+              style={{
+                width: 250,
+                height: 190,
+                objectFit: "contain",
+                objectPosition: "center bottom",
+                display: "block",
+                marginTop: -20,
+              }}
+            />
+          </div>
         </div>
 
         {/* 요약 헤더 카드 */}
@@ -108,7 +181,7 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
             display: "grid",
             gridTemplateColumns: "1fr 1fr 1fr 1fr",
             gap: 12,
-            marginBottom: 14,
+            marginBottom: 12,
             alignItems: "center",
           }}
         >
@@ -205,7 +278,6 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
             marginBottom: 12,
           }}
         >
-          {/* 헤더 */}
           <div
             style={{
               padding: "12px 20px",
@@ -222,8 +294,6 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
               {completedCount}/{totalCount} 완료
             </span>
           </div>
-
-          {/* 아이템들 */}
           <div style={{ padding: "4px 0" }}>
             {todos.map((todo) => (
               <div
