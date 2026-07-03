@@ -3,7 +3,7 @@ import Landing from "./pages/Landing";
 import WorryInput from "./pages/WorryInput";
 import ChoiceMap from "./pages/ChoiceMap";
 import RouteComparePage from "./pages/RouteComparePage";
-import TodoPage from "./pages/TodoPage";
+import TodoPage from "./pages/Todopage";
 import { compareRoutes, generateTodos } from "./api/index";
 import { mockRoutes, mockTodos, mockStructured } from "./data/mockData";
 import "./App.css";
@@ -104,8 +104,6 @@ function App() {
         onBack={() => setStep("map")}
       />
     );
-  if (step === "todo")
-    return <TodoPage data={todoData} onResetRoute={() => setStep("compare")} />;
   if (step === "todo")
     return (
       <TodoPage

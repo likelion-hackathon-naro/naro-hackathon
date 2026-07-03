@@ -15,24 +15,24 @@ export default function TextList({
   const marker = MARKER[type] || MARKER.dot;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
       {items.map((item, i) => (
         <div
           key={i}
           style={{
-            fontSize: 13,
+            fontSize: 15,
             color: highlight ? "#1D4ED8" : "#5B6478",
             display: "flex",
             alignItems: "flex-start",
-            gap: 5,
-            lineHeight: 1.55,
+            gap: 7,
+            lineHeight: 1.6,
           }}
         >
           <span
             style={{
               color: highlight ? "#3B6FE0" : marker.color,
               fontWeight: 700,
-              fontSize: 12,
+              fontSize: 14,
               marginTop: 2,
               flexShrink: 0,
             }}
