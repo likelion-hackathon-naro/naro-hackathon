@@ -31,6 +31,7 @@ export const mockRoutes = comparisonData.comparison.map((item, idx) => ({
   id: ROUTE_META[idx].id,
   routeId: item.routeId,
   title: ROUTE_META[idx].title,
+  summary: item.summary ?? ROUTE_META[idx].description.replace(/\n/g, " "),
   description: ROUTE_META[idx].description,
   tag: ROUTE_META[idx].tag,
   pros: item.pros,

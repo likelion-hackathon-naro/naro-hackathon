@@ -15,11 +15,11 @@ export default function SignalBadge({ level, label }) {
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 6,
-        padding: "4px 11px",
+        gap: 7,
+        padding: "6px 13px",
         borderRadius: 20,
-        fontSize: 13,
-        fontWeight: 600,
+        fontSize: 15,
+        fontWeight: 700,
         marginBottom: 2,
         background: color.bg,
         color: color.text,
@@ -27,8 +27,8 @@ export default function SignalBadge({ level, label }) {
     >
       <span
         style={{
-          width: 7,
-          height: 7,
+          width: 8,
+          height: 8,
           borderRadius: "50%",
           background: color.dot,
           flexShrink: 0,
