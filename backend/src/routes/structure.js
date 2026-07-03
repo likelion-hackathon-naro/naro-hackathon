@@ -51,6 +51,12 @@ router.post("/", async (req, res) => {
       data: structuredMock,
     });
   }
+
+  // Frontend로 응답 전송
+  return res.status(200).json({
+    success: true,
+    data: structuredMock,
+  });
 });
 
 module.exports = router;
