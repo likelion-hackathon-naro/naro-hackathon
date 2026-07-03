@@ -41,7 +41,9 @@
 - 배열 순서 = 실행 순서. now → short → mid → long 순으로, 같은 timeframe 안에서는 priority 오름차순으로 정렬한다.
 - id는 "todo-1", "todo-2" 처럼 1부터 정렬된 순서대로 부여한다.
 - done은 모두 false로 시작한다.
-- 각 항목의 hint에는 "왜 이게 지금/나중인지" 또는 "첫 스텝"을 한 문장으로 짧게 적는다.
+- title은 동사로 끝나는 짧은 액션 한 줄(공백 포함 25자 내외).
+- 각 항목의 hint에는 "왜 지금/나중인지" 또는 "첫 스텝"을 아주 짧게 적는다
+  (한 구절, 공백 포함 30자 내외 — 부연 설명을 붙이지 않는다).
 ```
 
 ## User Message (템플릿)
@@ -120,7 +122,7 @@
       "timeframe": "now",
       "priority": 1,
       "isMilestone": false,
-      "hint": "지원의 모든 출발점 — 오늘 30분이면 초안은 나온다"
+      "hint": "지원의 출발점 — 오늘 바로 시작"
     },
     {
       "id": "todo-2",
@@ -129,25 +131,25 @@
       "timeframe": "now",
       "priority": 2,
       "isMilestone": false,
-      "hint": "목표가 구체화돼야 이후 준비 방향이 잡힌다"
+      "hint": "방향을 먼저 잡아야 준비가 구체화"
     },
     {
       "id": "todo-3",
-      "title": "코딩테스트 문제 풀이 루틴 시작 (주 3회)",
+      "title": "코딩테스트 풀이 루틴 시작 (주 3회)",
       "done": false,
       "timeframe": "short",
       "priority": 1,
       "isMilestone": false,
-      "hint": "이번 주부터 습관으로 만들어야 한 달 뒤 실력이 붙는다"
+      "hint": "이번 주부터 습관화"
     },
     {
       "id": "todo-4",
-      "title": "전공 프로젝트 1개를 포트폴리오로 정리하기",
+      "title": "전공 프로젝트 1개 포트폴리오화하기",
       "done": false,
       "timeframe": "mid",
       "priority": 1,
       "isMilestone": true,
-      "hint": "완성되면 서류·면접 경쟁력이 눈에 띄게 오른다"
+      "hint": "서류·면접 경쟁력의 핵심"
     },
     {
       "id": "todo-5",
@@ -156,16 +158,16 @@
       "timeframe": "mid",
       "priority": 2,
       "isMilestone": true,
-      "hint": "실제 지원까지 가야 결과가 생긴다 — 앞 액션들의 도착점"
+      "hint": "앞 액션들의 도착점"
     },
     {
       "id": "todo-6",
-      "title": "최종 합격 및 입사 확정",
+      "title": "최종 합격 및 입사 확정하기",
       "done": false,
       "timeframe": "long",
       "priority": 1,
       "isMilestone": true,
-      "hint": "이 경로의 최종 목적지 — 위 마일스톤이 쌓이면 도달한다"
+      "hint": "이 경로의 최종 목적지"
     }
   ]
 }

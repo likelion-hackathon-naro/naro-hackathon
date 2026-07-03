@@ -15,6 +15,7 @@
 - current: 지금 진행 중인 것 / 현재 상황 (string 리스트).
 - options: 고민 중인 선택지. 각 선택지를 카드 객체로 만든다.
            id는 "opt-1", "opt-2"처럼 1부터 순서대로 부여(고유). title은 간결한 제목.
+           description은 그 선택지가 무엇인지 한 줄 설명 — 이후 경로 비교 AI가 이 설명으로 선택지를 이해한다.
 - criteria: 사용자가 중요하게 보는 기준 (string 리스트).
 - concerns: 걱정되는 점 (string 리스트).
 
@@ -22,9 +23,11 @@
 - 사용자가 명시하지 않은 선택지를 새로 지어내지 않는다.
 - 텍스트에서 근거를 찾을 수 없어 비어있는 필드는 빈 배열/빈 문자열로 두고,
   그 필드명을 missing 배열에 담는다.
-- missing이 있으면 followup에 "어떤 부분을 더 알려달라"는 한국어 질문을 1~2문장으로 작성한다.
+- missing이 있으면 followup에 "어떤 부분을 더 알려달라"는 한국어 질문을 1문장으로 작성한다.
   부족한 게 없으면 missing은 [], followup은 ""로 둔다.
-- 모든 텍스트는 한국어로 작성한다.
+- 모든 텍스트는 한국어로, 간결하게 작성한다.
+  - title은 명사구로 짧게(예: "대학원 진학"), description은 한 줄(공백 포함 40자 내외).
+  - current/criteria/concerns의 각 항목도 긴 문장 대신 짧은 구로 쓴다.
 ```
 
 ## User Message (템플릿)
@@ -60,9 +63,10 @@
           "type": "object",
           "properties": {
             "id": { "type": "string" },
-            "title": { "type": "string" }
+            "title": { "type": "string" },
+            "description": { "type": "string" }
           },
-          "required": ["id", "title"],
+          "required": ["id", "title", "description"],
           "additionalProperties": false
         }
       },
@@ -84,9 +88,9 @@
   "goal": "졸업 후 커리어 시작",
   "current": ["컴퓨터공학과 4학년 1학기", "졸업까지 2학기 남음"],
   "options": [
-    { "id": "opt-1", "title": "대기업 취업 준비" },
-    { "id": "opt-2", "title": "대학원 진학" },
-    { "id": "opt-3", "title": "스타트업 인턴" }
+    { "id": "opt-1", "title": "대기업 취업 준비", "description": "안정적인 대기업에 신입으로 지원" },
+    { "id": "opt-2", "title": "대학원 진학", "description": "전공 전문성을 더 깊이 쌓는 진학 경로" },
+    { "id": "opt-3", "title": "스타트업 인턴", "description": "실무 경험을 빠르게 쌓는 인턴 경로" }
   ],
   "criteria": ["성장", "안정성", "전공 활용"],
   "concerns": ["취업 실패 리스크", "준비 기간 부족"],
