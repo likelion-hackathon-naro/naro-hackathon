@@ -44,7 +44,6 @@ export default function TodoPage({ data = mockTodos, onResetRoute, onBack }) {
         overflow: "hidden",
       }}
     >
-      {/* nav */}
       <nav
         style={{
           background: "#fff",
@@ -68,12 +67,10 @@ export default function TodoPage({ data = mockTodos, onResetRoute, onBack }) {
         </span>
       </nav>
 
-      <div
-        onClick={onBack}
-        style={{ flex: 1, overflow: "auto", padding: "0 2.5vw" }}
-      >
+      <div style={{ flex: 1, overflow: "auto", padding: "0 2.5vw" }}>
         {/* 뒤로가기 */}
         <div
+          onClick={onBack}
           style={{
             fontSize: 13,
             color: "#5B6478",
@@ -85,7 +82,7 @@ export default function TodoPage({ data = mockTodos, onResetRoute, onBack }) {
           ← 지도 보기로 돌아가기
         </div>
 
-        {/* 헤더 - 텍스트 위쪽 정렬, 이미지 오른쪽 */}
+        {/* 헤더 */}
         <div
           style={{
             display: "flex",
@@ -111,7 +108,6 @@ export default function TodoPage({ data = mockTodos, onResetRoute, onBack }) {
             </p>
           </div>
 
-          {/* 이미지 + 말풍선 */}
           <div style={{ position: "relative", flexShrink: 0 }}>
             <div
               style={{
@@ -163,11 +159,12 @@ export default function TodoPage({ data = mockTodos, onResetRoute, onBack }) {
               src={stage.img}
               alt="island"
               style={{
-                width: 180,
-                height: 130,
+                width: 220,
+                height: 160,
                 objectFit: "contain",
-                objectPosition: "center bottom",
+                objectPosition: "center top",
                 display: "block",
+                marginTop: -10,
               }}
             />
           </div>
@@ -296,7 +293,6 @@ export default function TodoPage({ data = mockTodos, onResetRoute, onBack }) {
               {completedCount}/{totalCount} 완료
             </span>
           </div>
-          {/* 좌우 분리 */}
           <div
             style={{
               display: "grid",
@@ -347,9 +343,6 @@ export default function TodoPage({ data = mockTodos, onResetRoute, onBack }) {
                         border: "1.5px solid #CBD5E1",
                         background: "#fff",
                         flexShrink: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
                       }}
                     />
                     <span style={{ fontSize: 12, color: "#16213E", flex: 1 }}>

@@ -4,7 +4,11 @@
   overflow: hidden;
   padding: 22px 42px 72px;
   background:
-    radial-gradient(circle at 50% 38%, rgba(216, 231, 255, 0.76) 0, transparent 30%),
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(216, 231, 255, 0.76) 0,
+      transparent 30%
+    ),
     linear-gradient(180deg, #ffffff 0%, #ffffff 64%, #eef6ff 100%);
   color: #10213d;
 }
@@ -20,19 +24,19 @@
 .landing-logo {
   border: 0;
   background: transparent;
-  color: #11223f;
+  color: #3b6fe0;
   font-family: inherit;
-  font-size: 30px;
-  font-weight: 900;
+  font-size: 25px;
+  font-weight: 700;
   letter-spacing: -0.04em;
   cursor: pointer;
 }
 
 .landing-logo span {
-  color: var(--color-primary);
-  font-size: 18px;
+  color: #3b6fe0;
+  font-size: 23px;
   margin-left: 2px;
-  vertical-align: middle;
+  vertical-align: baseline;
 }
 
 .landing-hero {
@@ -58,7 +62,7 @@
 }
 
 .landing-badge::before {
-  content: "✦";
+  content: "";
   margin-right: 10px;
 }
 
@@ -219,7 +223,11 @@
   position: absolute;
   inset: 26px 0 0;
   border-radius: 50%;
-  background: radial-gradient(circle at 52% 40%, #a6d99f 0 38%, #e7c98e 39% 100%);
+  background: radial-gradient(
+    circle at 52% 40%,
+    #a6d99f 0 38%,
+    #e7c98e 39% 100%
+  );
   box-shadow: 0 12px 0 rgba(93, 150, 211, 0.14);
 }
 
