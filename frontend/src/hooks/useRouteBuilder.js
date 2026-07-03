@@ -6,12 +6,9 @@ function isSamePath(a, b) {
   return a.length === b.length && a.every((id, idx) => id === b[idx]);
 }
 
-/**
- * "경로 추가" 버튼 → 노드를 순서대로 클릭 → 경로 완성 → 목록에 저장 흐름을 관리.
- */
 export default function useRouteBuilder() {
   const [isAdding, setIsAdding] = useState(false);
-  const [currentPath, setCurrentPath] = useState([]); // option id 배열
+  const [currentPath, setCurrentPath] = useState([]);
   const [routes, setRoutes] = useState([]);
   const [selectedRouteId, setSelectedRouteId] = useState(null);
   const [favoriteRouteIds, setFavoriteRouteIds] = useState([]);
@@ -32,10 +29,13 @@ export default function useRouteBuilder() {
   const selectNode = useCallback(
     (nodeId) => {
       if (!isAdding) return;
-      setRouteMessage("");
       setCurrentPath((prev) => {
-        // 같은 노드 연속 클릭 방지
-        if (prev[prev.length - 1] === nodeId) return prev;
+        // 이미 경로에 포함된 노드 클릭 방지
+        if (prev.includes(nodeId)) {
+          setRouteMessage("이미 선택한 섬이에요!");
+          return prev;
+        }
+        setRouteMessage("");
         return [...prev, nodeId];
       });
     },
