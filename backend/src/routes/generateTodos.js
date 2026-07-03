@@ -1,7 +1,10 @@
 const express = require("express");
 const todosMock = require("../../../shared/mock/todos.json");
+const { generateTodosWithGemini } = require("../services/geminiService");
 
 const router = express.Router();
+
+const shouldUseMock = () => process.env.USE_MOCK !== "false";
 
 router.post("/", async (req, res) => {
   // Frontend 데이터 검증
@@ -18,10 +21,10 @@ router.post("/", async (req, res) => {
 
   const { routeId, optionIds, context } = req.body;
 
-  if (typeof routeId !== "string") {
+  if (typeof routeId !== "string" || routeId.trim().length === 0) {
     return res.status(400).json({
       success: false,
-      message: "routeId는 string이어야 합니다.",
+      message: "routeId는 비어있지 않은 string이어야 합니다.",
     });
   }
 
@@ -40,13 +43,13 @@ router.post("/", async (req, res) => {
   }
 
   const isValidOptionIds = optionIds.every(
-    (optionId) => typeof optionId === "string",
+    (optionId) => typeof optionId === "string" && optionId.trim().length > 0,
   );
 
   if (!isValidOptionIds) {
     return res.status(400).json({
       success: false,
-      message: "optionIds는 string 배열이어야 합니다.",
+      message: "optionIds는 비어있지 않은 string 배열이어야 합니다.",
     });
   }
 
@@ -61,21 +64,36 @@ router.post("/", async (req, res) => {
     });
   }
 
-  if (typeof context.goal !== "string") {
+  if (typeof context.goal !== "string" || context.goal.trim().length === 0) {
     return res.status(400).json({
       success: false,
-      message: "context.goal은 string이어야 합니다.",
+      message: "context.goal은 비어있지 않은 string이어야 합니다.",
     });
   }
 
-  // TODO: AI 할 일 생성 요청
-  // TODO: AI 할 일 생성 결과 가공
+  if (shouldUseMock()) {
+    return res.status(200).json({
+      success: true,
+      data: todosMock,
+    });
+  }
 
-  // Frontend로 응답 전송
-  return res.status(200).json({
-    success: true,
-    data: todosMock,
-  });
+  try {
+    const todosData = await generateTodosWithGemini(req.body);
+
+    return res.status(200).json({
+      success: true,
+      data: todosData,
+    });
+  } catch (error) {
+    console.error("generate-todos AI error:", error);
+
+    // AI 실패 시 mock fallback
+    return res.status(200).json({
+      success: true,
+      data: todosMock,
+    });
+  }
 });
 
 module.exports = router;

@@ -1,6 +1,10 @@
 const express = require("express");
 const structuredMock = require("../../../shared/mock/structured.json");
+const { structureWithGemini } = require("../services/geminiService");
+
 const router = express.Router();
+
+const shouldUseMock = () => process.env.USE_MOCK !== "false";
 
 router.post("/", async (req, res) => {
   // Frontend 데이터 검증
@@ -15,8 +19,38 @@ router.post("/", async (req, res) => {
     });
   }
 
-  // TODO: AI 자연어 구조화 요청
-  // TODO: AI 구조화 결과 가공
+  const rawText = req.body.rawText || req.body.input || req.body.text;
+
+  if (typeof rawText !== "string" || rawText.trim().length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "rawText는 비어있지 않은 string이어야 합니다.",
+    });
+  }
+
+  if (shouldUseMock()) {
+    return res.status(200).json({
+      success: true,
+      data: structuredMock,
+    });
+  }
+
+  try {
+    const structuredData = await structureWithGemini(req.body);
+
+    return res.status(200).json({
+      success: true,
+      data: structuredData,
+    });
+  } catch (error) {
+    console.error("structure AI error:", error);
+
+    // AI 실패 시 mock fallback
+    return res.status(200).json({
+      success: true,
+      data: structuredMock,
+    });
+  }
 
   // Frontend로 응답 전송
   return res.status(200).json({
