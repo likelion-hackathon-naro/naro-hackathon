@@ -1,10 +1,10 @@
 {
   "todos": [
-    { "id": "todo-1", "title": "이력서/포트폴리오 작성", "done": false },
-    { "id": "todo-2", "title": "지원할 인턴·기업 3곳 리스트업", "done": false },
-    { "id": "todo-3", "title": "코딩테스트 문제 풀이 시작 (주 3회)", "done": false },
-    { "id": "todo-4", "title": "전공 프로젝트 1개 정리해 포트폴리오화", "done": false },
-    { "id": "todo-5", "title": "자기소개서 초안 작성", "done": false },
-    { "id": "todo-6", "title": "지원 일정 캘린더에 등록", "done": false }
+    { "id": "todo-1", "title": "이력서·포트폴리오 작성", "done": false },
+    { "id": "todo-2", "title": "지원 인턴·기업 3곳 리스트업", "done": false },
+    { "id": "todo-3", "title": "코테 풀이 시작 (주 3회)", "done": false },
+    { "id": "todo-4", "title": "전공 프로젝트 1개 포트폴리오화", "done": false },
+    { "id": "todo-5", "title": "자소서 초안 작성", "done": false },
+    { "id": "todo-6", "title": "지원 일정 캘린더 등록", "done": false }
   ]
 }
