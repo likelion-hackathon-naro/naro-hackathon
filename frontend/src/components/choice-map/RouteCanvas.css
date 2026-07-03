@@ -1,0 +1,24 @@
+.route-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  background:
+    radial-gradient(circle at 20% 20%, #f3f7ff 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, #eef6ff 0%, transparent 50%),
+    var(--color-bg-grad-top);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.route-canvas__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.route-canvas__nodes {
+  position: absolute;
+  inset: 0;
+}
