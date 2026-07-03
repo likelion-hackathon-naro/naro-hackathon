@@ -1,6 +1,6 @@
 const express = require("express");
 const structuredMock = require("../../../shared/mock/structured.json");
-const { generateStructuredData } = require("../services/geminiService");
+const { structureWithGemini } = require("../services/geminiService");
 
 const router = express.Router();
 
@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    const structuredData = await generateStructuredData(req.body);
+    const structuredData = await structureWithGemini(req.body);
 
     return res.status(200).json({
       success: true,

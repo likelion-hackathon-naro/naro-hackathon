@@ -1,126 +1,5 @@
-const compareRoutesSchema = {
-  type: "object",
-  properties: {
-    comparison: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          routeId: { type: "string" },
-          summary: { type: "string" },
-          pros: {
-            type: "array",
-            items: { type: "string" },
-          },
-          cons: {
-            type: "array",
-            items: { type: "string" },
-          },
-          risk: {
-            type: "object",
-            properties: {
-              level: {
-                type: "string",
-                enum: ["green", "yellow", "red"],
-              },
-              reasons: {
-                type: "array",
-                items: { type: "string" },
-              },
-            },
-            required: ["level", "reasons"],
-            additionalProperties: false,
-          },
-          todoBurden: {
-            type: "object",
-            properties: {
-              level: {
-                type: "string",
-                enum: ["green", "yellow", "red"],
-              },
-              items: {
-                type: "array",
-                items: { type: "string" },
-              },
-            },
-            required: ["level", "items"],
-            additionalProperties: false,
-          },
-          fallback: {
-            type: "array",
-            items: { type: "string" },
-          },
-        },
-        required: [
-          "routeId",
-          "summary",
-          "pros",
-          "cons",
-          "risk",
-          "todoBurden",
-          "fallback",
-        ],
-        additionalProperties: false,
-      },
-    },
-  },
-  required: ["comparison"],
-  additionalProperties: false,
-};
-
-function safeStringify(value) {
-  return JSON.stringify(value, null, 2);
-}
-
-function buildOptionTitleMap(requestBody) {
-  const optionSources = [
-    requestBody.options,
-    requestBody.context?.options,
-    requestBody.structured?.options,
-  ];
-
-  const optionTitleMap = {};
-
-  optionSources.forEach((source) => {
-    if (!Array.isArray(source)) {
-      return;
-    }
-
-    source.forEach((option) => {
-      if (
-        option &&
-        typeof option === "object" &&
-        typeof option.id === "string" &&
-        typeof option.title === "string"
-      ) {
-        optionTitleMap[option.id] = option.title;
-      }
-    });
-  });
-
-  return optionTitleMap;
-}
-
-function enrichRoutesWithOptionTitles(requestBody) {
-  const optionTitleMap = buildOptionTitleMap(requestBody);
-
-  return requestBody.routes.map((route) => ({
-    id: route.id,
-    name: route.name,
-    optionIds: route.optionIds,
-    favorite: route.favorite,
-    options: route.optionIds.map((optionId) => ({
-      id: optionId,
-      title: optionTitleMap[optionId] || optionId,
-    })),
-  }));
-}
-
-function buildCompareRoutesPrompt(requestBody) {
-  const { context } = requestBody;
-  const enrichedRoutes = enrichRoutesWithOptionTitles(requestBody);
-
-  const systemPrompt = `당신은 대학생의 진로 경로를 비교 분석하는 커리어 컨설턴트입니다.
+const systemPrompt = `
+당신은 대학생의 진로 경로를 비교 분석하는 커리어 컨설턴트입니다.
 각 경로(routes)는 옵션들의 순서 있는 묶음입니다.
 사용자(대학생)의 목표(goal), 중요 기준(criteria), 걱정거리(concerns)에 비추어 각 경로를 평가합니다.
 
@@ -138,30 +17,214 @@ function buildCompareRoutesPrompt(requestBody) {
 - level 값은 반드시 "green", "yellow", "red" 중 하나만 사용한다.
 - 모든 리스트는 최대 3개까지만.
 - routeId는 입력으로 받은 각 경로의 id를 그대로 사용한다.
-- 각 경로의 차이가 드러나도록 비교한다.
-- 사용자의 criteria와 concerns를 반드시 분석에 반영한다.
-- 너무 일반적인 조언보다 해당 경로에서 실제로 생길 수 있는 장단점과 리스크를 작성한다.
-- 모든 텍스트는 한국어로 작성한다.`;
+- 모든 텍스트는 한국어로, 카드에 바로 들어갈 만큼 간결하게 작성한다.
+  - summary는 한 줄(공백 포함 30자 내외).
+  - pros/cons/reasons/items/fallback의 각 항목은 완결된 문장이 아니라 짧은 구로 쓴다
+    (예: "인턴 실무 경험" O / "인턴을 하면 실무 경험을 쌓을 수 있어서 좋다" X).
+`.trim();
 
-  const userPrompt = `[목표]
-${context.goal}
+const schema = {
+  type: "object",
+  properties: {
+    comparison: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          routeId: { type: "string" },
+          summary: { type: "string" },
+          pros: {
+            type: "array",
+            items: { type: "string" },
+          },
+          cons: {
+            type: "array",
+            items: { type: "string" },
+          },
+          riskLevel: {
+            type: "string",
+            enum: ["green", "yellow", "red"],
+          },
+          riskReasons: {
+            type: "array",
+            items: { type: "string" },
+          },
+          todoBurdenLevel: {
+            type: "string",
+            enum: ["green", "yellow", "red"],
+          },
+          todoBurdenItems: {
+            type: "array",
+            items: { type: "string" },
+          },
+          fallback: {
+            type: "array",
+            items: { type: "string" },
+          },
+        },
+        required: [
+          "routeId",
+          "summary",
+          "pros",
+          "cons",
+          "riskLevel",
+          "riskReasons",
+          "todoBurdenLevel",
+          "todoBurdenItems",
+          "fallback",
+        ],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ["comparison"],
+  additionalProperties: false,
+};
 
-[중요 기준]
-${safeStringify(context.criteria)}
+function toArray(value) {
+  if (Array.isArray(value)) {
+    return value;
+  }
 
-[걱정되는 점]
-${safeStringify(context.concerns)}
+  if (typeof value === "string" && value.trim()) {
+    return [value.trim()];
+  }
+
+  return [];
+}
+
+function formatList(value) {
+  const list = toArray(value);
+  return list.length > 0 ? list.join(", ") : "없음";
+}
+
+function buildOptionMap(options = []) {
+  const optionMap = new Map();
+
+  if (!Array.isArray(options)) {
+    return optionMap;
+  }
+
+  options.forEach((option) => {
+    if (
+      option === null ||
+      typeof option !== "object" ||
+      Array.isArray(option) ||
+      typeof option.id !== "string"
+    ) {
+      return;
+    }
+
+    optionMap.set(option.id, {
+      id: option.id,
+      title:
+        typeof option.title === "string" && option.title.trim()
+          ? option.title.trim()
+          : option.id,
+      description:
+        typeof option.description === "string" && option.description.trim()
+          ? option.description.trim()
+          : "",
+    });
+  });
+
+  return optionMap;
+}
+
+function formatRouteOptions(route, optionMap) {
+  const optionIds = Array.isArray(route.optionIds) ? route.optionIds : [];
+
+  if (optionIds.length === 0) {
+    return "  - 포함된 선택지 없음";
+  }
+
+  return optionIds
+    .map((optionId) => {
+      const option = optionMap.get(optionId);
+
+      if (!option) {
+        return `  - ${optionId}: 선택지 정보 없음`;
+      }
+
+      if (option.description) {
+        return `  - ${option.id} ${option.title}: ${option.description}`;
+      }
+
+      return `  - ${option.id} ${option.title}: 설명 없음`;
+    })
+    .join("\n");
+}
+
+function formatRoutes(routes = [], options = []) {
+  if (!Array.isArray(routes) || routes.length === 0) {
+    return "비교할 경로 없음";
+  }
+
+  const optionMap = buildOptionMap(options);
+
+  return routes
+    .map((route, index) => {
+      const routeNumber = index + 1;
+
+      const routeId =
+        typeof route.id === "string" && route.id.trim()
+          ? route.id.trim()
+          : `route-${routeNumber}`;
+
+      const routeName =
+        typeof route.name === "string" && route.name.trim()
+          ? route.name.trim()
+          : `경로 ${routeNumber}`;
+
+      const optionIds = Array.isArray(route.optionIds)
+        ? route.optionIds.join(", ")
+        : "";
+
+      return `
+[경로${routeNumber}] id=${routeId} name=${routeName} optionIds=[${optionIds}]
+${formatRouteOptions(route, optionMap)}
+`.trim();
+    })
+    .join("\n\n");
+}
+
+function buildPrompt(requestBody = {}) {
+  const routes = Array.isArray(requestBody.routes) ? requestBody.routes : [];
+
+  const context =
+    requestBody.context !== null &&
+    typeof requestBody.context === "object" &&
+    !Array.isArray(requestBody.context)
+      ? requestBody.context
+      : {};
+
+  const options = Array.isArray(context.options)
+    ? context.options
+    : Array.isArray(requestBody.options)
+      ? requestBody.options
+      : [];
+
+  const goal =
+    typeof context.goal === "string" && context.goal.trim()
+      ? context.goal.trim()
+      : "없음";
+
+  return `
+[목표] ${goal}
+[중요 기준] ${formatList(context.criteria)}
+[걱정되는 점] ${formatList(context.concerns)}
 
 [비교할 경로들]
-${safeStringify(enrichedRoutes)}
+${formatRoutes(routes, options)}
 
 각 경로를 분석해서 비교 결과를 만들어줘.
-참고로 각 경로의 optionIds는 선택지 카드의 id이고, 순서대로 진행된다는 의미야.`;
-
-  return { systemPrompt, userPrompt };
+각 경로의 optionIds는 선택지 카드의 id이고, 순서대로 진행된다는 의미야.
+각 옵션의 title과 description을 보고 경로가 실제로 어떤 선택인지 파악해서 비교해.
+`.trim();
 }
 
 module.exports = {
-  compareRoutesSchema,
-  buildCompareRoutesPrompt,
+  systemPrompt,
+  schema,
+  buildPrompt,
 };
