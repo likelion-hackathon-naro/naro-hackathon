@@ -1,0 +1,44 @@
+:root {
+  --color-bg: #f5f7fb;
+  --color-bg-grad-top: #eef2fb;
+  --color-card: #ffffff;
+  --color-border: #e5e9f2;
+  --color-text: #1c2230;
+  --color-text-sub: #6b7280;
+  --color-text-faint: #9aa3b2;
+
+  --color-primary: #3b6cf6;
+  --color-primary-dark: #2e57d0;
+  --color-primary-soft: #eaf0ff;
+
+  --color-island-sand: #e7c98e;
+  --color-island-grass: #8fc98a;
+  --color-island-grass-dark: #6fae6c;
+
+  --color-tag-bg: #f3f5fa;
+  --color-tag-border: #e1e5ee;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 4px 24px rgba(30, 41, 59, 0.06);
+  --shadow-card-hover: 0 8px 28px rgba(30, 41, 59, 0.1);
+
+  --font-base: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+    'Noto Sans KR', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(180deg, #ffffff 0%, var(--color-bg-grad-top) 100%);
+  color: var(--color-text);
+  font-family: var(--font-base);
+}

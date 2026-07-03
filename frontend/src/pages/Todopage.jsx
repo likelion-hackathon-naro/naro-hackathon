@@ -4,7 +4,7 @@ import { mockTodos } from "../data/mockData";
 const FONT_STACK =
   "'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
 
-export default function TodoPage({ data = mockTodos, onResetRoute }) {
+export default function TodoPage({ data = mockTodos, onResetRoute, onBack }) {
   const [todos, setTodos] = useState(data.todos);
 
   const toggleTodo = (id) => {
@@ -68,7 +68,10 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
         </span>
       </nav>
 
-      <div style={{ flex: 1, overflow: "auto", padding: "0 2.5vw" }}>
+      <div
+        onClick={onBack}
+        style={{ flex: 1, overflow: "auto", padding: "0 2.5vw" }}
+      >
         {/* 뒤로가기 */}
         <div
           style={{
@@ -298,8 +301,7 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
-              maxHeight: 300,
-              minHeight: 0,
+              height: 280,
             }}
           >
             {/* 왼쪽 - 미완료 */}
@@ -307,7 +309,7 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
               style={{
                 borderRight: "0.5px solid #F1F5FB",
                 overflowY: "auto",
-                maxHeight: 300,
+                height: "100%",
               }}
             >
               <div
@@ -369,7 +371,7 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
               )}
             </div>
             {/* 오른쪽 - 완료 */}
-            <div style={{ overflowY: "auto", maxHeight: 300 }}>
+            <div style={{ overflowY: "auto", height: "100%" }}>
               <div
                 style={{
                   padding: "6px 0",

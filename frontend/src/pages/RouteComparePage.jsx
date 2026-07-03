@@ -9,6 +9,7 @@ const FONT_STACK =
 export default function RouteComparePage({
   routes = mockRoutes,
   onSelectMain,
+  onBack,
 }) {
   const [selectedId, setSelectedId] = useState(routes[0]?.id);
   const selectedRoute = routes.find((r) => r.id === selectedId);

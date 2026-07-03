@@ -1,35 +1,36 @@
 import { useState, useEffect } from "react";
+import Landing from "./pages/Landing";
+import WorryInput from "./pages/WorryInput";
+import ChoiceMap from "./pages/ChoiceMap";
 import RouteComparePage from "./pages/RouteComparePage";
 import TodoPage from "./pages/TodoPage";
 import { compareRoutes, generateTodos } from "./api/index";
 import { mockRoutes, mockTodos, mockStructured } from "./data/mockData";
+import "./App.css";
 
 function App() {
-  const [page, setPage] = useState("compare");
+  const [step, setStep] = useState("landing");
+  const [worryData, setWorryData] = useState(null);
   const [routes, setRoutes] = useState(mockRoutes);
   const [todoData, setTodoData] = useState(mockTodos);
   const [loading, setLoading] = useState(false);
 
-  // 페이지 로드 시 경로 비교 API 호출
   useEffect(() => {
     const fetchRoutes = async () => {
       try {
         const data = await compareRoutes(mockRoutes, mockStructured);
         console.log("compareRoutes 응답:", data);
-        // 응답 오면 여기서 routes 업데이트 (AI 연결되면 실제 데이터로 교체)
-        // setRoutes(data.comparison.map(...));
       } catch (e) {
         console.error("compareRoutes 실패, mock data 사용:", e);
       }
     };
-    fetchRoutes();
-  }, []);
+    if (step === "compare") fetchRoutes();
+  }, [step]);
 
   const handleSelectMain = async (selectedRoute) => {
     setLoading(true);
     try {
       const data = await generateTodos(selectedRoute, mockStructured);
-      console.log("generateTodos 응답:", data);
       setTodoData({
         selectedRoute: {
           id: selectedRoute.id,
@@ -44,7 +45,7 @@ function App() {
       console.error("할 일 생성 실패, mock data 사용:", e);
     } finally {
       setLoading(false);
-      setPage("todo");
+      setStep("todo");
     }
   };
 
@@ -66,11 +67,53 @@ function App() {
     );
   }
 
-  if (page === "todo") {
-    return <TodoPage data={todoData} onResetRoute={() => setPage("compare")} />;
-  }
-
-  return <RouteComparePage routes={routes} onSelectMain={handleSelectMain} />;
+  if (step === "landing")
+    return (
+      <Landing
+        onStart={(data) => {
+          setWorryData(data);
+          setStep("input");
+        }}
+      />
+    );
+  if (step === "input")
+    return (
+      <WorryInput
+        initialData={worryData}
+        onSubmit={(data) => {
+          setWorryData(data);
+          setStep("map");
+        }}
+      />
+    );
+  if (step === "map")
+    return (
+      <ChoiceMap
+        worryData={worryData}
+        onCompare={(compareData) => {
+          setWorryData((prev) => ({ ...prev, compareData }));
+          setStep("compare");
+        }}
+      />
+    );
+  if (step === "compare")
+    return (
+      <RouteComparePage
+        routes={routes}
+        onSelectMain={handleSelectMain}
+        onBack={() => setStep("map")}
+      />
+    );
+  if (step === "todo")
+    return <TodoPage data={todoData} onResetRoute={() => setStep("compare")} />;
+  if (step === "todo")
+    return (
+      <TodoPage
+        data={todoData}
+        onResetRoute={() => setStep("compare")}
+        onBack={() => setStep("map")}
+      />
+    );
 }
 
 export default App;
