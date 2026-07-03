@@ -1,122 +1,119 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from "react";
+import Landing from "./pages/Landing";
+import WorryInput from "./pages/WorryInput";
+import ChoiceMap from "./pages/ChoiceMap";
+import RouteComparePage from "./pages/RouteComparePage";
+import TodoPage from "./pages/TodoPage";
+import { compareRoutes, generateTodos } from "./api/index";
+import { mockRoutes, mockTodos, mockStructured } from "./data/mockData";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [step, setStep] = useState("landing");
+  const [worryData, setWorryData] = useState(null);
+  const [routes, setRoutes] = useState(mockRoutes);
+  const [todoData, setTodoData] = useState(mockTodos);
+  const [loading, setLoading] = useState(false);
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+  useEffect(() => {
+    const fetchRoutes = async () => {
+      try {
+        const data = await compareRoutes(mockRoutes, mockStructured);
+        console.log("compareRoutes 응답:", data);
+      } catch (e) {
+        console.error("compareRoutes 실패, mock data 사용:", e);
+      }
+    };
+    if (step === "compare") fetchRoutes();
+  }, [step]);
 
-      <div className="ticks"></div>
+  const handleSelectMain = async (selectedRoute) => {
+    setLoading(true);
+    try {
+      const data = await generateTodos(selectedRoute, mockStructured);
+      setTodoData({
+        selectedRoute: {
+          id: selectedRoute.id,
+          title: selectedRoute.title,
+          isMain: true,
+        },
+        goal: mockStructured.goal,
+        nextMilestone: mockTodos.nextMilestone,
+        todos: data.todos,
+      });
+    } catch (e) {
+      console.error("할 일 생성 실패, mock data 사용:", e);
+    } finally {
+      setLoading(false);
+      setStep("todo");
+    }
+  };
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+  if (loading) {
+    return (
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: "'Pretendard', sans-serif",
+          fontSize: 16,
+          color: "#5B6478",
+        }}
+      >
+        할 일을 생성하고 있어요...
+      </div>
+    );
+  }
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+  if (step === "landing")
+    return (
+      <Landing
+        onStart={(data) => {
+          setWorryData(data);
+          setStep("input");
+        }}
+      />
+    );
+  if (step === "input")
+    return (
+      <WorryInput
+        initialData={worryData}
+        onSubmit={(data) => {
+          setWorryData(data);
+          setStep("map");
+        }}
+      />
+    );
+  if (step === "map")
+    return (
+      <ChoiceMap
+        worryData={worryData}
+        onCompare={(compareData) => {
+          setWorryData((prev) => ({ ...prev, compareData }));
+          setStep("compare");
+        }}
+      />
+    );
+  if (step === "compare")
+    return (
+      <RouteComparePage
+        routes={routes}
+        onSelectMain={handleSelectMain}
+        onBack={() => setStep("map")}
+      />
+    );
+  if (step === "todo")
+    return <TodoPage data={todoData} onResetRoute={() => setStep("compare")} />;
+  if (step === "todo")
+    return (
+      <TodoPage
+        data={todoData}
+        onResetRoute={() => setStep("compare")}
+        onBack={() => setStep("map")}
+      />
+    );
 }
 
-export default App
+export default App;

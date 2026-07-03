@@ -1,34 +1,16 @@
-# Naro Hackathon
+# React + Vite
 
-AI 기반 선택지 비교 및 실행 계획 관리 서비스
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-## MVP
+Currently, two official plugins are available:
 
-1. 선택지 입력 / AI 구조화
-2. 선택지 지도 시각화
-3. 사용자가 경로 생성
-4. AI 경로 비교 분석
-5. 메인 경로 선택
-6. AI 할 일 생성
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Run Frontend
+## React Compiler
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Run Backend
+## Expanding the Oxlint configuration
 
-```bash
-cd backend
-npm install
-npm run dev
-```
-
-## API
-
-GET /api/health (확인용)
-POST /api/compare-routes
-POST /api/generate-todos
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
