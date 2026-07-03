@@ -38,7 +38,11 @@ export default function Landing({ onStart }) {
   return (
     <main className="landing-page">
       <header className="landing-header">
-        <button type="button" className="landing-logo" onClick={() => setRawText("")}>
+        <button
+          type="button"
+          className="landing-logo"
+          onClick={() => setRawText("")}
+        >
           나로<span>▶</span>
         </button>
       </header>
@@ -51,7 +55,9 @@ export default function Landing({ onStart }) {
       <span className="landing-dash landing-dash--right" aria-hidden="true" />
 
       <section className="landing-hero" id="service">
-        <div className="landing-badge">복잡한 고민, 한눈에 길이 되도록</div>
+        <div className="landing-badge">
+          나로(路) — 복잡한 고민을 나만의 길로
+        </div>
         <h1>나로</h1>
         <p>
           당신의 고민을 경로로 만들고,
