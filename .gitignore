@@ -8,3 +8,5 @@ frontend/dist
 
 backend/node_modules
 backend/.env
+
+backend/test-*.json

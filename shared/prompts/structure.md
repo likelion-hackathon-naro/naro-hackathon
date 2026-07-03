@@ -75,7 +75,15 @@
       "missing": { "type": "array", "items": { "type": "string" } },
       "followup": { "type": "string" }
     },
-    "required": ["goal", "current", "options", "criteria", "concerns", "missing", "followup"],
+    "required": [
+      "goal",
+      "current",
+      "options",
+      "criteria",
+      "concerns",
+      "missing",
+      "followup"
+    ],
     "additionalProperties": false
   }
 }
@@ -88,9 +96,21 @@
   "goal": "졸업 후 커리어 시작",
   "current": ["컴퓨터공학과 4학년 1학기", "졸업까지 2학기 남음"],
   "options": [
-    { "id": "opt-1", "title": "대기업 취업 준비", "description": "안정적인 대기업에 신입으로 지원" },
-    { "id": "opt-2", "title": "대학원 진학", "description": "전공 전문성을 더 깊이 쌓는 진학 경로" },
-    { "id": "opt-3", "title": "스타트업 인턴", "description": "실무 경험을 빠르게 쌓는 인턴 경로" }
+    {
+      "id": "opt-1",
+      "title": "대기업 취업 준비",
+      "description": "안정적인 대기업에 신입으로 지원"
+    },
+    {
+      "id": "opt-2",
+      "title": "대학원 진학",
+      "description": "전공 전문성을 더 깊이 쌓는 진학 경로"
+    },
+    {
+      "id": "opt-3",
+      "title": "스타트업 인턴",
+      "description": "실무 경험을 빠르게 쌓는 인턴 경로"
+    }
   ],
   "criteria": ["성장", "안정성", "전공 활용"],
   "concerns": ["취업 실패 리스크", "준비 기간 부족"],
