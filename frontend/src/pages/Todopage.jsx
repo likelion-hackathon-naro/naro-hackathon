@@ -160,12 +160,11 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
               src={stage.img}
               alt="island"
               style={{
-                width: 250,
-                height: 190,
+                width: 180,
+                height: 130,
                 objectFit: "contain",
                 objectPosition: "center bottom",
                 display: "block",
-                marginTop: -20,
               }}
             />
           </div>
@@ -294,55 +293,154 @@ export default function TodoPage({ data = mockTodos, onResetRoute }) {
               {completedCount}/{totalCount} 완료
             </span>
           </div>
-          <div style={{ padding: "4px 0" }}>
-            {todos.map((todo) => (
+          {/* 좌우 분리 */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              maxHeight: 300,
+              minHeight: 0,
+            }}
+          >
+            {/* 왼쪽 - 미완료 */}
+            <div
+              style={{
+                borderRight: "0.5px solid #F1F5FB",
+                overflowY: "auto",
+                maxHeight: 300,
+              }}
+            >
               <div
-                key={todo.id}
-                onClick={() => toggleTodo(todo.id)}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                  padding: "11px 20px",
-                  cursor: "pointer",
-                  borderBottom: "0.5px solid #F8FAFD",
+                  padding: "6px 0",
+                  borderBottom: "0.5px solid #F1F5FB",
                 }}
               >
-                <div
-                  style={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: 4,
-                    border: `1.5px solid ${todo.done ? "#3B6FE0" : "#CBD5E1"}`,
-                    background: todo.done ? "#3B6FE0" : "#fff",
-                    flexShrink: 0,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    transition: "all 0.15s",
-                  }}
-                >
-                  {todo.done && (
-                    <span
-                      style={{ color: "#fff", fontSize: 11, fontWeight: 700 }}
-                    >
-                      ✓
-                    </span>
-                  )}
-                </div>
                 <span
-                  style={{
-                    fontSize: 13,
-                    color: todo.done ? "#94A3B8" : "#16213E",
-                    textDecoration: todo.done ? "line-through" : "none",
-                    flex: 1,
-                    transition: "all 0.15s",
-                  }}
+                  style={{ fontSize: 11, color: "#94A3B8", padding: "0 16px" }}
                 >
-                  {todo.title}
+                  진행 중
                 </span>
               </div>
-            ))}
+              {todos
+                .filter((t) => !t.done)
+                .map((todo) => (
+                  <div
+                    key={todo.id}
+                    onClick={() => toggleTodo(todo.id)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      padding: "10px 16px",
+                      cursor: "pointer",
+                      borderBottom: "0.5px solid #F8FAFD",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 16,
+                        height: 16,
+                        borderRadius: 4,
+                        border: "1.5px solid #CBD5E1",
+                        background: "#fff",
+                        flexShrink: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    />
+                    <span style={{ fontSize: 12, color: "#16213E", flex: 1 }}>
+                      {todo.title}
+                    </span>
+                  </div>
+                ))}
+              {todos.filter((t) => !t.done).length === 0 && (
+                <div
+                  style={{
+                    padding: "20px 16px",
+                    fontSize: 12,
+                    color: "#94A3B8",
+                    textAlign: "center",
+                  }}
+                >
+                  모두 완료했어요! 🎉
+                </div>
+              )}
+            </div>
+            {/* 오른쪽 - 완료 */}
+            <div style={{ overflowY: "auto", maxHeight: 300 }}>
+              <div
+                style={{
+                  padding: "6px 0",
+                  borderBottom: "0.5px solid #F1F5FB",
+                }}
+              >
+                <span
+                  style={{ fontSize: 11, color: "#94A3B8", padding: "0 16px" }}
+                >
+                  완료
+                </span>
+              </div>
+              {todos
+                .filter((t) => t.done)
+                .map((todo) => (
+                  <div
+                    key={todo.id}
+                    onClick={() => toggleTodo(todo.id)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      padding: "10px 16px",
+                      cursor: "pointer",
+                      borderBottom: "0.5px solid #F8FAFD",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 16,
+                        height: 16,
+                        borderRadius: 4,
+                        border: "1.5px solid #3B6FE0",
+                        background: "#3B6FE0",
+                        flexShrink: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <span
+                        style={{ color: "#fff", fontSize: 10, fontWeight: 700 }}
+                      >
+                        ✓
+                      </span>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: 12,
+                        color: "#94A3B8",
+                        textDecoration: "line-through",
+                        flex: 1,
+                      }}
+                    >
+                      {todo.title}
+                    </span>
+                  </div>
+                ))}
+              {todos.filter((t) => t.done).length === 0 && (
+                <div
+                  style={{
+                    padding: "20px 16px",
+                    fontSize: 12,
+                    color: "#94A3B8",
+                    textAlign: "center",
+                  }}
+                >
+                  완료한 항목이 없어요
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

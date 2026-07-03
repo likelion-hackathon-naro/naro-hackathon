@@ -22,21 +22,20 @@ const ROW_CONFIG = [
   { key: "fallback", label: "실패 시 대안", icon: "🔄", type: "list-only-dot" },
 ];
 
-function Cell({ route, row }) {
-  const [open, setOpen] = useState(false);
+function Cell({ route, row, openRowKey, onToggle, selectedId }) {
+  const isSelected = route.id === selectedId;
+  const isOpen = openRowKey === row.key;
 
   if (row.type === "list-only") {
     return <TextList items={route[row.key]} type={row.listType} />;
   }
 
-  // 실패 시 대안 - 뱃지 없이 텍스트만
   if (row.type === "list-only-dot") {
     const data = route[row.key];
     const items = data?.options || data?.reasons || data?.tasks || [];
     return <TextList items={items} type="dot" />;
   }
 
-  // 리스크 / 할 일 부담 - 뱃지 누르면 토글
   const data = route[row.key];
   if (!data) return null;
   const items = data.reasons || data.tasks || data.options || [];
@@ -44,7 +43,7 @@ function Cell({ route, row }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
       <div
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => onToggle(row.key)}
         style={{
           cursor: "pointer",
           display: "inline-flex",
@@ -55,12 +54,12 @@ function Cell({ route, row }) {
       >
         <SignalBadge level={data.level} label={data.label} />
         <span style={{ fontSize: 11, color: "#94A3B8" }}>
-          {open ? "▲" : "▼"}
+          {isOpen ? "▲" : "▼"}
         </span>
       </div>
-      {open && (
+      {isOpen && (
         <div style={{ marginTop: 4 }}>
-          <TextList items={items} type="dot" />
+          <TextList items={items} type="dot" highlight={isSelected} />
         </div>
       )}
     </div>
@@ -69,7 +68,13 @@ function Cell({ route, row }) {
 
 const BRAND_MAIN = "#3B6FE0";
 
-export default function CompareTable({ routes }) {
+export default function CompareTable({ routes, selectedId }) {
+  const [openRowKey, setOpenRowKey] = useState(null);
+
+  const handleToggle = (rowKey) => {
+    setOpenRowKey((prev) => (prev === rowKey ? null : rowKey));
+  };
+
   return (
     <div
       style={{
@@ -159,7 +164,14 @@ export default function CompareTable({ routes }) {
             {row.label}
           </div>
           {routes.map((route) => (
-            <Cell key={route.id} route={route} row={row} />
+            <Cell
+              key={route.id}
+              route={route}
+              row={row}
+              openRowKey={openRowKey}
+              onToggle={handleToggle}
+              selectedId={selectedId}
+            />
           ))}
         </div>
       ))}
